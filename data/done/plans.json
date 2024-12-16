@@ -1,0 +1,276 @@
+{
+    "plans": [
+        {
+            "id": "factura",
+            "isRecommended": false,
+            "title": "FACTURA",
+            "subtitle": null,
+            "originalPrice": 35000,
+            "discountedPrice": null,
+            "freeMonths": null,
+            "purchasePoints": "1 punto de venta",
+            "features": [
+                {
+                    "text": "Clientes",
+                    "savings": null,
+                    "hasInfo": false,
+                    "isPremium": false
+                },
+                {
+                    "text": "Productos",
+                    "savings": null,
+                    "hasInfo": false,
+                    "isPremium": false
+                },
+                {
+                    "text": "Presupuesto",
+                    "savings": null,
+                    "hasInfo": false,
+                    "isPremium": true
+                },
+                {
+                    "text": "Orden de Compra",
+                    "savings": null,
+                    "hasInfo": false,
+                    "isPremium": true
+                },
+                {
+                    "text": "Factura",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Cheques",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Vendedor",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Estadísticas",
+                    "isPremium": true,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Libro de IVA",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Caja",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Caja General",
+                    "isPremium": true,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Control de Gastos",
+                    "isPremium": true,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Base de datos en la nube",
+                    "isPremium": true,
+                    "savings": null,
+                    "hasInfo": false
+                }
+            ]
+        },
+        {
+            "id": "comercios",
+            "isRecommended": false,
+            "title": "COMERCIOS",
+            "subtitle": null,
+            "originalPrice": 55000,
+            "discountedPrice": null,
+            "discount": null,
+            "freeMonths": null,
+            "purchasePoints": "Hasta 5 puntos de ventas",
+            "features": [
+                {
+                    "text": "Clientes",
+                    "savings": null,
+                    "hasInfo": false,
+                    "isPremium": false
+                },
+                {
+                    "text": "Productos",
+                    "savings": null,
+                    "hasInfo": false,
+                    "isPremium": false
+                },
+                {
+                    "text": "Presupuesto",
+                    "savings": null,
+                    "hasInfo": false,
+                    "isPremium": true
+                },
+                {
+                    "text": "Orden de Compra",
+                    "savings": null,
+                    "hasInfo": false,
+                    "isPremium": true
+                },
+                {
+                    "text": "Factura",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Cheques",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Vendedor",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Estadísticas",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Libro de IVA",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Caja",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Caja General",
+                    "savings": null,
+                    "isPremium": true,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Control de Gastos",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Base de datos en la nube",
+                    "savings": null,
+                    "isPremium": true,
+                    "hasInfo": false
+                }
+            ]
+        },
+        {
+            "id": "Pro",
+            "isRecommended": true,
+            "title": "PRO",
+            "subtitle": null,
+            "originalPrice": 85000,
+            "discountedPrice": null,
+            "discount": null,
+            "freeMonths": null,
+            "purchasePoints": "Punto de ventas ilimitados",
+            "features": [
+                {
+                    "text": "Clientes",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Productos",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Presupuesto",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Orden de Compra",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Factura",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Cheques",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Vendedor",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Estadísticas",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Libro de IVA",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Caja",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Caja General",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Control de Gastos",
+                    "savings": null,
+                    "isPremium": false,
+                    "hasInfo": false
+                },
+                {
+                    "text": "Base de datos en la nube",
+                    "isPremium": false,
+                    "savings": null,
+                    "hasInfo": false
+                }
+            ]
+        }
+    ]
+}

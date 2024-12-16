@@ -1,0 +1,60 @@
+[
+    {
+      "icon": "CheckCircle",
+      "title": "Todo Incluido",
+      "description": "Los pagos mensuales incluyen todos nuestros servicios.",
+      "color": "text-green-600",
+      "isStrikethrough": false
+    },
+    {
+      "icon": "BarChart",
+      "title": "Informes Detallados",
+      "description": "Genera informes completos para un mejor control de tus finanzas.",
+      "color": "text-blue-500",
+      "isStrikethrough": false
+    },
+    {
+      "icon": "Clock",
+      "title": "Ahorro de Tiempo",
+      "description": "Automatiza tus procesos de facturación y ahorra horas cada mes.",
+      "color": "text-purple-500",
+      "isStrikethrough": false
+    },
+    {
+      "icon": "DollarSign",
+      "title": "Sin costo extra",
+      "description": "No cobramos costos de licencias, actualizaciones ni mantenimiento.",
+      "color": "text-yellow-600",
+      "isStrikethrough": true
+    },
+    {
+      "icon": "Headphones",
+      "title": "Soporte 24/7",
+      "description": "Nuestro equipo de soporte está disponible las 24 horas, los 7 días de la semana para ayudarte.",
+      "color": "text-yellow-500",
+      "isStrikethrough": false
+    },
+    {
+      "icon": "Unlock",
+      "title": "Sin contratos",
+      "description": "No pedimos un periodo mínimo de permanencia.",
+      "color": "text-blue-600",
+      "isStrikethrough": false
+    },
+    {
+      "icon": "XCircle",
+      "title": "Sin ataduras",
+      "description": "Puedes cancelar el servicio cuando quieras.",
+      "color": "text-red-600",
+      "isStrikethrough": false
+    },
+    {
+      "icon": "PieChart",
+      "title": "Análisis en Tiempo Real",
+      "description": "Accede a análisis en tiempo real para tomar decisiones informadas rápidamente.",
+      "color": "text-red-500",
+      "isStrikethrough": false
+    }
+  ]
+  
+  

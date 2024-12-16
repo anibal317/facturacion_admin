@@ -1,0 +1,32 @@
+[
+    {
+      "icon": "CheckCircle",
+      "title": "Todo Incluido",
+      "description": "Los pagos mensuales incluyen todos nuestros servicios.",
+      "color": "text-green-600",
+      "isStrikethrough": false
+    },
+    {
+      "icon": "DollarSign",
+      "title": "Sin costo extra",
+      "description": "No cobramos costos de licencias, actualizaciones ni mantenimiento.",
+      "color": "text-yellow-600",
+      "isStrikethrough": true
+    },
+    {
+      "icon": "Unlock",
+      "title": "Sin contratos",
+      "description": "No pedimos un periodo mínimo de permanencia.",
+      "color": "text-blue-600",
+      "isStrikethrough": false
+    },
+    {
+      "icon": "XCircle",
+      "title": "Sin ataduras",
+      "description": "Puedes cancelar el servicio cuando quieras.",
+      "color": "text-red-600",
+      "isStrikethrough": false
+    }
+  ]
+  
+  

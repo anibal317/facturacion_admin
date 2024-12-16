@@ -1,0 +1,32 @@
+[
+    {
+        "icon": "CheckCircle",
+        "title": "Fácil de Usar",
+        "description": "Interfaz intuitiva que se integra perfectamente con WordPress.",
+        "color": "text-green-500"
+    },
+    {
+        "icon": "BarChart",
+        "title": "Informes Detallados",
+        "description": "Genera informes completos para un mejor control de tus finanzas.",
+        "color": "text-blue-500"
+    },
+    {
+        "icon": "Clock",
+        "title": "Ahorro de Tiempo",
+        "description": "Automatiza tus procesos de facturación y ahorra horas cada mes.",
+        "color": "text-purple-500"
+    },
+    {
+        "icon": "Headphones", 
+        "title": "Soporte 24/7",
+        "description": "Nuestro equipo de soporte está disponible las 24 horas, los 7 días de la semana para ayudarte.",
+        "color": "text-yellow-500"
+    },
+    {
+        "icon": "PieChart", 
+        "title": "Análisis en Tiempo Real",
+        "description": "Accede a análisis en tiempo real para tomar decisiones informadas rápidamente.",
+        "color": "text-red-500"
+    }
+]

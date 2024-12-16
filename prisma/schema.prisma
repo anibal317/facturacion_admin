@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model benefit {
+  id              Int            @id @default(autoincrement())
+  icon            String
+  title           String
+  description     String
+  color           String
+  isStrikethrough Boolean        @default(false)
+  section         BenefitSection
+}
+
+model faq {
+  id       Int    @id @default(autoincrement())
+  value    String
+  question String
+  answer   String
+}
+
+model plan {
+  id              Int           @id @default(autoincrement())
+  planId          String        @unique(map: "Plan_planId_key")
+  isRecommended   Boolean       @default(false)
+  title           String
+  subtitle        String?
+  originalPrice   Float
+  discountedPrice Float?
+  freeMonths      Int?
+  purchasePoints  String
+  planfeature     planfeature[]
+}
+
+model planfeature {
+  id        Int     @id @default(autoincrement())
+  text      String
+  savings   String?
+  hasInfo   Boolean @default(false)
+  isPremium Boolean @default(false)
+  planId    String
+  plan      plan    @relation(fields: [planId], references: [planId], map: "PlanFeature_planId_fkey")
+
+  @@index([planId], map: "PlanFeature_planId_fkey")
+}
+
+model feature {
+  id          Int     @id @default(autoincrement())
+  title       String  @unique(map: "Feature_title_key")
+  description String?
+  video       Boolean @default(false)
+  videoLink   String?
+  item        item[]
+}
+
+model item {
+  id         Int     @id @default(autoincrement())
+  text       String
+  parentId   Int?
+  featureId  Int
+  feature    feature @relation(fields: [featureId], references: [id], map: "Item_featureId_fkey")
+  item       item?   @relation("itemToitem", fields: [parentId], references: [id], map: "Item_parentId_fkey")
+  other_item item[]  @relation("itemToitem")
+
+  @@index([featureId], map: "Item_featureId_idx")
+  @@index([parentId], map: "Item_parentId_idx")
+}
+
+model Navigation {
+  id               Int                @id @default(autoincrement())
+  section          navigation_section
+  logoIcon         String
+  logoText         String
+  logoHref         String
+  dropdownEnabled  Boolean            @default(false)
+  links            Link[]             @relation("NavigationLinks") // Relación a Link
+}
+
+model Link {
+  id             Int                @id @default(autoincrement())
+  text           String
+  href           String
+  enabled        Boolean            @default(true)
+  type           String             // Puede ser "mainLink" o "dropdownLink"
+  navigationId   Int                // Relación con Navigation
+
+  navigation     Navigation         @relation("NavigationLinks", fields: [navigationId], references: [id]) // Relación a Navigation
+}
+
+enum BenefitSection {
+  HOME
+  FEATURE
+}
+
+enum navigation_section {
+  HOME
+  FEATURE
+}
