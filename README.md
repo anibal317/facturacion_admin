@@ -49,7 +49,7 @@ npm install -D typescript ts-node @types/node
       $ prisma init
 
       Generate artifacts (e.g. Prisma Client)
-      $npx  prisma generate
+      $npx prisma generate
 
       Browse your data
       $npx  prisma studio

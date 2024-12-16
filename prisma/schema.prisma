@@ -1,11 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // URL para la base de datos sombra
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model benefit {
@@ -16,13 +17,6 @@ model benefit {
   color           String
   isStrikethrough Boolean        @default(false)
   section         BenefitSection
-}
-
-model faq {
-  id       Int    @id @default(autoincrement())
-  value    String
-  question String
-  answer   String
 }
 
 model plan {
@@ -72,25 +66,33 @@ model item {
   @@index([parentId], map: "Item_parentId_idx")
 }
 
-model Navigation {
-  id               Int                @id @default(autoincrement())
-  section          navigation_section
-  logoIcon         String
-  logoText         String
-  logoHref         String
-  dropdownEnabled  Boolean            @default(false)
-  links            Link[]             @relation("NavigationLinks") // Relación a Link
+model faq {
+  id       Int    @id @default(autoincrement())
+  value    String
+  question String
+  answer   String @db.VarChar(600)
 }
 
-model Link {
-  id             Int                @id @default(autoincrement())
-  text           String
-  href           String
-  enabled        Boolean            @default(true)
-  type           String             // Puede ser "mainLink" o "dropdownLink"
-  navigationId   Int                // Relación con Navigation
+model link {
+  id           Int        @id @default(autoincrement())
+  text         String
+  href         String
+  enabled      Boolean    @default(true)
+  type         String
+  navigationId Int
+  navigation   navigation @relation(fields: [navigationId], references: [id], map: "Link_navigationId_fkey")
 
-  navigation     Navigation         @relation("NavigationLinks", fields: [navigationId], references: [id]) // Relación a Navigation
+  @@index([navigationId], map: "Link_navigationId_fkey")
+}
+
+model navigation {
+  id              Int                @id @default(autoincrement())
+  section         navigation_section
+  logoIcon        String
+  logoText        String
+  logoHref        String
+  dropdownEnabled Boolean            @default(false)
+  link            link[]
 }
 
 enum BenefitSection {
