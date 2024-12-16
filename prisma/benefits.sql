@@ -2,7 +2,7 @@
 INSERT INTO benefit (icon, title, description, color, isStrikethrough, section) VALUES
 ('BarChart', 'Informes Detallados', 'Genera informes completos para un mejor control de tus finanzas.', 'text-blue-500', false, 'FEATURE'),
 ('Clock', 'Ahorro de Tiempo', 'Automatiza tus procesos de facturación y ahorra horas cada mes.', 'text-purple-500', false, 'FEATURE'),
-('Headphones', 'Soporte 24/7', 'Nuestro equipo de soporte está disponible las 24 horas, los 7 días de la semana para ayudarte.', 'text-yellow-500', false, 'HFEATUREOME'),
+('Headphones', 'Soporte 24/7', 'Nuestro equipo de soporte está disponible las 24 horas, los 7 días de la semana para ayudarte.', 'text-yellow-500', false, 'FEATURE'),
 ('PieChart', 'Análisis en Tiempo Real', 'Accede a análisis en tiempo real para tomar decisiones informadas rápidamente.', 'text-red-500', false, 'FEATURE'),
 ('BarChart', 'Informes Detallados', 'Genera informes completos para un mejor control de tus finanzas.', 'text-blue-500', false, 'FEATURE');
 

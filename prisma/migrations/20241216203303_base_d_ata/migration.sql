@@ -6,6 +6,7 @@ CREATE TABLE `benefit` (
     `description` VARCHAR(191) NOT NULL,
     `color` VARCHAR(191) NOT NULL,
     `isStrikethrough` BOOLEAN NOT NULL DEFAULT false,
+    `section` ENUM('HOME', 'FEATURE') NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -16,16 +17,6 @@ CREATE TABLE `faq` (
     `value` VARCHAR(191) NOT NULL,
     `question` VARCHAR(191) NOT NULL,
     `answer` VARCHAR(191) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `navigation` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `type` VARCHAR(191) NOT NULL,
-    `logo` LONGTEXT NOT NULL,
-    `links` LONGTEXT NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -60,7 +51,7 @@ CREATE TABLE `planfeature` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Feature` (
+CREATE TABLE `feature` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NULL,
@@ -72,7 +63,7 @@ CREATE TABLE `Feature` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Item` (
+CREATE TABLE `item` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `text` VARCHAR(191) NOT NULL,
     `parentId` INTEGER NULL,
@@ -83,11 +74,38 @@ CREATE TABLE `Item` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `Navigation` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `section` ENUM('HOME', 'FEATURE') NOT NULL,
+    `logoIcon` VARCHAR(191) NOT NULL,
+    `logoText` VARCHAR(191) NOT NULL,
+    `logoHref` VARCHAR(191) NOT NULL,
+    `dropdownEnabled` BOOLEAN NOT NULL DEFAULT false,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Link` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `text` VARCHAR(191) NOT NULL,
+    `href` VARCHAR(191) NOT NULL,
+    `enabled` BOOLEAN NOT NULL DEFAULT true,
+    `type` VARCHAR(191) NOT NULL,
+    `navigationId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `planfeature` ADD CONSTRAINT `PlanFeature_planId_fkey` FOREIGN KEY (`planId`) REFERENCES `plan`(`planId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Item` ADD CONSTRAINT `Item_featureId_fkey` FOREIGN KEY (`featureId`) REFERENCES `Feature`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `item` ADD CONSTRAINT `Item_featureId_fkey` FOREIGN KEY (`featureId`) REFERENCES `feature`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Item` ADD CONSTRAINT `Item_parentId_fkey` FOREIGN KEY (`parentId`) REFERENCES `Item`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `item` ADD CONSTRAINT `Item_parentId_fkey` FOREIGN KEY (`parentId`) REFERENCES `item`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Link` ADD CONSTRAINT `Link_navigationId_fkey` FOREIGN KEY (`navigationId`) REFERENCES `Navigation`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
