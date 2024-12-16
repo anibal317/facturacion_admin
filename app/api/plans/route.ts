@@ -1,16 +1,31 @@
-import  prisma  from '@/app/lib/prisma'
-import { NextResponse } from 'next/server'
+// pages/api/plans.ts
 
-export async function GET() {
-  try {
-    const plans = await prisma.plan.findMany({
-      include: {
-        planfeature: true
-      }
-    })
-    return NextResponse.json(plans)
-  } catch (error) {
-    return NextResponse.json({ error: 'Error fetching plans' }, { status: 500 })
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Habilitar CORS
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir todos los orígenes
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Métodos permitidos
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Encabezados permitidos
+
+  if (req.method === 'OPTIONS') {
+    // Responder a las solicitudes preflight
+    res.status(200).end();
+    return;
+  }
+
+  if (req.method === 'GET') {
+    try {
+      const plans = await prisma.plan.findMany(); // Suponiendo que tienes un modelo "Plan"
+      res.status(200).json({ plans });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al obtener los planes' });
+    }
+  } else {
+    res.setHeader('Allow', ['GET', 'POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
-
