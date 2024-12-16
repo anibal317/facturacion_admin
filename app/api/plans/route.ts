@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Habilitar CORS
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir todos los orígenes
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001'); // Cambia esto a tu dominio en producción
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Métodos permitidos
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Encabezados permitidos
 
