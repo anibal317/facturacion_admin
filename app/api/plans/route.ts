@@ -2,10 +2,13 @@
 
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { cors } from '../cors'; // Asegúrate de que la ruta sea correcta
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(req: Request) {
+  const res = cors(req); // Aplica el middleware de CORS
+
   try {
     const plans = await prisma.plan.findMany({
       include: {
@@ -13,13 +16,12 @@ export async function GET() {
       }
     }
     ); // Suponiendo que tienes un modelo "Plan"
-    return NextResponse.json({ plans });
+    return NextResponse.json({ plans }, { headers: res.headers });
   } catch (error) {
     return NextResponse.json({ error: 'Error al obtener los planes' }, { status: 500 });
   }
 }
 
-// Si necesitas manejar CORS, puedes hacerlo aquí
-export async function OPTIONS() {
-  return NextResponse.json({}, { status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' } });
+export async function OPTIONS(req: Request) {
+  return cors(req); // Maneja la solicitud OPTIONS
 }
