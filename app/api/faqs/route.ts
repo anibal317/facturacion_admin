@@ -3,7 +3,9 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const benefits = await prisma.faq.findMany()
+    const benefits = await prisma.faq.findMany({
+      where:{active:true}
+    })
     return NextResponse.json(benefits)
   } catch (error) {
     return NextResponse.json({ error: 'Error fetching benefits' }, { status: 500 })
