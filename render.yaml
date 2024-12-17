@@ -1,0 +1,4 @@
+services:
+  - type: web
+    envVars:
+      ALLOW_ORIGIN: https://facturacionale.netlify.app

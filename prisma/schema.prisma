@@ -71,6 +71,7 @@ model faq {
   value    String
   question String
   answer   String @db.VarChar(600)
+  active Boolean
 }
 
 model link {
@@ -93,6 +94,33 @@ model navigation {
   logoHref        String
   dropdownEnabled Boolean            @default(false)
   link            link[]
+}
+
+model config {
+  id             Int    @id @default(autoincrement())
+  contactWS      Int
+  contactPhone   String
+  contactAddress String
+  contactEmail   String
+  companyName    String
+  instagramLink  String
+  facebookLink   String
+  youtubeLink    String
+  copyrightText  String
+  companyHours   String
+}
+
+model sectionTexts{
+  id          Int    @id @default(autoincrement())
+  section     String
+  text        String
+}
+
+model client {
+  id   Int    @id @unique @default(autoincrement())
+  name String
+  img  String
+  link String
 }
 
 enum BenefitSection {

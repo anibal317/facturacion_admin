@@ -12,16 +12,6 @@ CREATE TABLE `benefit` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `faq` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `value` VARCHAR(191) NOT NULL,
-    `question` VARCHAR(191) NOT NULL,
-    `answer` VARCHAR(191) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `plan` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `planId` VARCHAR(191) NOT NULL,
@@ -75,7 +65,30 @@ CREATE TABLE `item` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Navigation` (
+CREATE TABLE `faq` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `value` VARCHAR(191) NOT NULL,
+    `question` VARCHAR(191) NOT NULL,
+    `answer` VARCHAR(600) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `link` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `text` VARCHAR(191) NOT NULL,
+    `href` VARCHAR(191) NOT NULL,
+    `enabled` BOOLEAN NOT NULL DEFAULT true,
+    `type` VARCHAR(191) NOT NULL,
+    `navigationId` INTEGER NOT NULL,
+
+    INDEX `Link_navigationId_fkey`(`navigationId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `navigation` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `section` ENUM('HOME', 'FEATURE') NOT NULL,
     `logoIcon` VARCHAR(191) NOT NULL,
@@ -87,14 +100,39 @@ CREATE TABLE `Navigation` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Link` (
+CREATE TABLE `config` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `text` VARCHAR(191) NOT NULL,
-    `href` VARCHAR(191) NOT NULL,
-    `enabled` BOOLEAN NOT NULL DEFAULT true,
-    `type` VARCHAR(191) NOT NULL,
-    `navigationId` INTEGER NOT NULL,
+    `contactWS` INTEGER NOT NULL,
+    `contactPhone` VARCHAR(191) NOT NULL,
+    `contactAddress` VARCHAR(191) NOT NULL,
+    `contactEmail` VARCHAR(191) NOT NULL,
+    `companyName` VARCHAR(191) NOT NULL,
+    `instagramLink` VARCHAR(191) NOT NULL,
+    `facebookLink` VARCHAR(191) NOT NULL,
+    `youtubeLink` VARCHAR(191) NOT NULL,
+    `copyrightText` VARCHAR(191) NOT NULL,
+    `companyHours` VARCHAR(191) NOT NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `sectionTexts` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `section` VARCHAR(191) NOT NULL,
+    `text` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `client` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `img` VARCHAR(191) NOT NULL,
+    `link` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `client_id_key`(`id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -108,4 +146,4 @@ ALTER TABLE `item` ADD CONSTRAINT `Item_featureId_fkey` FOREIGN KEY (`featureId`
 ALTER TABLE `item` ADD CONSTRAINT `Item_parentId_fkey` FOREIGN KEY (`parentId`) REFERENCES `item`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Link` ADD CONSTRAINT `Link_navigationId_fkey` FOREIGN KEY (`navigationId`) REFERENCES `Navigation`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `link` ADD CONSTRAINT `Link_navigationId_fkey` FOREIGN KEY (`navigationId`) REFERENCES `navigation`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

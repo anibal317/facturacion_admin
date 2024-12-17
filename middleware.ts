@@ -5,7 +5,7 @@ import type { NextRequest } from 'next/server';
 export function middleware(req: NextRequest) {
   const response = NextResponse.next();
 
-  const allowedOrigins = ['https://facturacionale.netlify.app'];
+  const allowedOrigins = ['https://facturacionale.netlify.app','localhost:3000','http://localhost:3001','https://facturacion-admin.onrender.com/api/plans'];
   const origin = req.headers.get('origin') || '';
 
   if (allowedOrigins.includes(origin)) {
