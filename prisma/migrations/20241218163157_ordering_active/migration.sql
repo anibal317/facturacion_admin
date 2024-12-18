@@ -1,0 +1,43 @@
+-- AlterTable
+ALTER TABLE `benefit` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `client` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `config` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `faq` ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1,
+    MODIFY `active` BOOLEAN NOT NULL DEFAULT true;
+
+-- AlterTable
+ALTER TABLE `feature` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `item` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `link` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `navigation` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `plan` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `planfeature` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `sectiontexts` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true,
+    ADD COLUMN `ordering` INTEGER NOT NULL DEFAULT 1;

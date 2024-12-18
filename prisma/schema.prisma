@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("mysql://root:root@localhost:3306/test")
+  url      = env("DATABASE_URL")
 }
 
 model benefit {
@@ -16,6 +16,8 @@ model benefit {
   color           String
   isStrikethrough Boolean        @default(false)
   section         BenefitSection
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 }
 
 model plan {
@@ -29,7 +31,9 @@ model plan {
   freeMonths      Int?
   purchasePoints  String
   planfeature     planfeature[]
-}
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
+  }
 
 model planfeature {
   id        Int     @id @default(autoincrement())
@@ -39,6 +43,8 @@ model planfeature {
   isPremium Boolean @default(false)
   planId    String
   plan      plan    @relation(fields: [planId], references: [planId], map: "PlanFeature_planId_fkey")
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 
   @@index([planId], map: "PlanFeature_planId_fkey")
 }
@@ -50,6 +56,8 @@ model feature {
   video       Boolean @default(false)
   videoLink   String?
   item        item[]
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 }
 
 model item {
@@ -60,6 +68,8 @@ model item {
   feature    feature @relation(fields: [featureId], references: [id], map: "Item_featureId_fkey")
   item       item?   @relation("itemToitem", fields: [parentId], references: [id], map: "Item_parentId_fkey")
   other_item item[]  @relation("itemToitem")
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 
   @@index([featureId], map: "Item_featureId_idx")
   @@index([parentId], map: "Item_parentId_idx")
@@ -70,7 +80,8 @@ model faq {
   value    String
   question String
   answer   String  @db.VarChar(600)
-  active   Boolean
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 }
 
 model link {
@@ -81,6 +92,8 @@ model link {
   type         String
   navigationId Int
   navigation   navigation @relation(fields: [navigationId], references: [id], map: "Link_navigationId_fkey")
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 
   @@index([navigationId], map: "Link_navigationId_fkey")
 }
@@ -93,6 +106,8 @@ model navigation {
   logoHref        String
   dropdownEnabled Boolean            @default(false)
   link            link[]
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 }
 
 model config {
@@ -107,12 +122,16 @@ model config {
   youtubeLink    String
   copyrightText  String
   companyHours   String
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 }
 
 model sectionTexts {
   id      Int    @id @default(autoincrement())
   section String
   text    String
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 }
 
 model client {
@@ -120,6 +139,8 @@ model client {
   name String
   img  String
   link String
+  active          Boolean        @default(true)
+  ordering        Int            @default(1)
 }
 
 enum BenefitSection {

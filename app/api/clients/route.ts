@@ -5,20 +5,14 @@ const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const sec = url.searchParams.get('sec');
   const page = parseInt(url.searchParams.get('page') || '1', 10);
   const pageSize = parseInt(url.searchParams.get('pageSize') || '10', 10);
   const skip = (page - 1) * pageSize;
 
   try {
-    let whereClause = {};
-    if (sec) {
-      whereClause = { section: sec.toUpperCase(),active:true };
-    }
-
-    const [benefits, totalItems] = await Promise.all([
-      prisma.benefit.findMany({
-        where: whereClause,
+    const [client, totalItems] = await Promise.all([
+      prisma.client.findMany({
+        where: { active: true }, // Solo filtra por 'active'
         orderBy: [
           { ordering: 'asc' },
           { id: 'asc' }
@@ -26,17 +20,17 @@ export async function GET(request: Request) {
         skip: pageSize === 0 ? undefined : skip,
         take: pageSize === 0 ? undefined : pageSize,
       }),
-      prisma.benefit.count({ where: whereClause })
+      prisma.client.count({ where: { active: true } }) // Solo cuenta los activos
     ]);
 
     const totalPages = pageSize === 0 ? 1 : Math.ceil(totalItems / pageSize);
 
     const baseUrl = `${url.origin}${url.pathname}`;
-    const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pageSize=${pageSize}${sec ? `&sec=${sec}` : ''}` : null;
-    const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pageSize=${pageSize}${sec ? `&sec=${sec}` : ''}` : null;
+    const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pageSize=${pageSize}` : null;
+    const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pageSize=${pageSize}` : null;
 
     return NextResponse.json({
-      data: benefits,
+      data: client,
       meta: {
         currentPage: page,
         pageSize: pageSize,
@@ -47,8 +41,7 @@ export async function GET(request: Request) {
       }
     });
   } catch (error) {
-    console.error('Error fetching benefits:', error);
-    return NextResponse.json({ error: 'Error fetching benefits' }, { status: 500 });
+    console.error('Error fetching clients:', error);
+    return NextResponse.json({ error: 'Error fetching clients' }, { status: 500 });
   }
 }
-
