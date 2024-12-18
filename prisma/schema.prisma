@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("mysql://root:root@localhost:3306/test")
+  provider = "mysql"
+  url      = env("mysql://root:root@localhost:3306/test")
 }
 
 model benefit {
@@ -66,11 +66,11 @@ model item {
 }
 
 model faq {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   value    String
   question String
-  answer   String @db.VarChar(600)
-  active Boolean
+  answer   String  @db.VarChar(600)
+  active   Boolean
 }
 
 model link {
@@ -109,10 +109,10 @@ model config {
   companyHours   String
 }
 
-model sectionTexts{
-  id          Int    @id @default(autoincrement())
-  section     String
-  text        String
+model sectionTexts {
+  id      Int    @id @default(autoincrement())
+  section String
+  text    String
 }
 
 model client {
