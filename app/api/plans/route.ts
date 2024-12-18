@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 export async function GET(req: Request) {
   try {
     const plans = await prisma.plan.findMany({
+      where:{active:true},
       include: {
         planfeature: true,
       },
