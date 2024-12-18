@@ -25,7 +25,7 @@ export async function GET(request: Request) {
 
     const totalPages = pageSize === 0 ? 1 : Math.ceil(totalItems / pageSize);
 
-    const baseUrl = `${url.origin}${url.pathname}`;
+    const baseUrl = `${process.env.BASE_URL}${url.pathname}`;
     const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pageSize=${pageSize}` : null;
     const nextPage = page < totalPages ? `${baseUrl}?page=${page + 1}&pageSize=${pageSize}` : null;
 
