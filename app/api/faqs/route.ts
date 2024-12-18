@@ -36,7 +36,7 @@ export async function GET(request: Request) {
     // Retornar la respuesta con los datos obtenidos
     return NextResponse.json(faqs, {
       headers: {
-        'Access-Control-Allow-Origin': 'https://facturacionale.netlify.app', // Permitir todas las solicitudes de origen
+        'Access-Control-Allow-Origin': '*', // Permitir todas las solicitudes de origen
         'Access-Control-Allow-Methods': 'GET, OPTIONS', // Métodos permitidos
         'Access-Control-Allow-Headers': 'Content-Type', // Encabezados permitidos
       },
