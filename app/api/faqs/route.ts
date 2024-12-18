@@ -25,7 +25,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(faqs);
   } catch (error) {
-    return NextResponse.json({ error: 'Error fetching faqs' }, { status: 500 });
+    return NextResponse.json({ error: 'Error fetching faqs',data:error }, { status: 500 });
   }
 }
 
