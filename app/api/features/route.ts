@@ -7,9 +7,10 @@ export async function GET() {
   try {
     // Obtiene las características con sus items
     const features = await prisma.feature.findMany({
-      where:{active:true},
+      where: { active: true },
       include: {
         item: {
+          where: { active: true },
           include: {
             other_item: true, // Incluye subelementos relacionados
           },
