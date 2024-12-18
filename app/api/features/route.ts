@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma';  // Asegúrate de tener la ruta correcta a tu cliente Prisma
+import { PrismaClient } from '@prisma/client';
+import { NextResponse } from 'next/server';
 
+const prisma = new PrismaClient();
 export async function GET() {
   try {
     const features = await prisma.feature.findMany({

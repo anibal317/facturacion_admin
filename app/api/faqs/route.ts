@@ -1,16 +1,29 @@
-import prisma from '@/lib/prisma';  // Asegúrate de tener la ruta correcta a tu cliente Prisma
-import { NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client';
+import { NextResponse } from 'next/server';
 
-export async function GET() {
+const prisma = new PrismaClient();
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const showAll = url.searchParams.get('all'); // Obtiene el parámetro 'all' de la query string
+
   try {
-    const faqs = await prisma.faq.findMany({
-      where: {
-        active: true,  // Filtra por el campo active
-      },
-    })
-    return NextResponse.json(faqs)
+    let faqs;
+
+    if (showAll === 'true') {
+      // Si el parámetro 'all' es 'true', obtiene todos los registros
+      faqs = await prisma.faq.findMany();
+    } else {
+      // De lo contrario, obtiene solo los registros activos
+      faqs = await prisma.faq.findMany({
+        where: {
+          active: true,
+        },
+      });
+    }
+
+    return NextResponse.json(faqs);
   } catch (error) {
-    return NextResponse.json({ error: 'Error fetching faqs' }, { status: 500 })
+    return NextResponse.json({ error: 'Error fetching faqs' }, { status: 500 });
   }
 }
-

@@ -1,27 +1,38 @@
+import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';  // Asegúrate de tener la ruta correcta a tu cliente Prisma
 
-export async function GET() {
+const prisma = new PrismaClient();
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const sec = url.searchParams.get('sec'); // Obtiene el parámetro 'sec' de la query string
+  console.log(sec);
+  
   try {
-    // Obtener beneficios para la sección "HOME"
-    const homeBenefits = await prisma.benefit.findMany({
-      where: {
-        section: 'HOME',  // Filtrar por la sección 'HOME'
-      },
-    });
+    let benefits;
 
-    // Obtener beneficios para la sección "FEATURE"
-    const featureBenefits = await prisma.benefit.findMany({
-      where: {
-        section: 'FEATURE',  // Filtrar por la sección 'FEATURE'
-      },
-    });
+    switch (sec) {
+      case 'home':
+        benefits = await prisma.benefit.findMany({
+          where: {
+            section: 'HOME',  // Filtrar por la sección 'HOME'
+          },
+        });
+        break;
+      case 'feature':
+        benefits = await prisma.benefit.findMany({
+          where: {
+            section: 'FEATURE',  // Filtrar por la sección 'FEATURE'
+          },
+        });
+        break;
+      default:
+        benefits = await prisma.benefit.findMany(); // Obtener todos los beneficios si no se especifica 'sec'
+        break;
+    }
 
-    // Retornar ambos conjuntos de beneficios
-    return NextResponse.json({
-      homeBenefits,
-      featureBenefits,
-    });
+    // Retornar los beneficios obtenidos
+    return NextResponse.json(benefits);
   } catch (error) {
     console.error('Error fetching benefits:', error);
     return NextResponse.json({ error: 'Error fetching benefits' }, { status: 500 });
