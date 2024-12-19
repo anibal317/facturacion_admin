@@ -1,9 +1,8 @@
-// app/components/MainContent.tsx
 import React from 'react';
 
 const MainContent = () => {
   return (
-    <div className="bg-white shadow-md p-6 rounded-lg">
+    <div className="bg-white shadow-md p-6 rounded-lg text-blue-600">
       <h2 className="mb-4 font-bold text-xl">Bienvenido al Dashboard</h2>
       <p className="text-gray-700">Aquí puedes gestionar tus pedidos y más.</p>
       <div className="mt-6">
@@ -28,3 +27,4 @@ const MainContent = () => {
 };
 
 export default MainContent;
+
