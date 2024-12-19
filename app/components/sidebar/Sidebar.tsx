@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Home, ShoppingCart, Settings, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, Trophy, Settings, LogOut, ChevronLeft, ChevronRight, FileUser , CircleHelpIcon, LayoutList, Link as LucideLink } from 'lucide-react';
+import Link from 'next/link'; // Importa el componente Link de Next.js
 
 interface SidebarProps {
   isOpen: boolean;
@@ -12,9 +13,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
   const [selectedOption, setSelectedOption] = useState('home');
 
   const menuItems = [
-    { id: 'home', icon: Home, label: 'Inicio' },
-    { id: 'orders', icon: ShoppingCart, label: 'Pedidos' },
-    { id: 'settings', icon: Settings, label: 'Configuración' },
+    { id: 'home', icon: Home, label: 'Inicio', path: '/dashboard' },
+    { id: 'plans', icon: Trophy, label: 'Planes', path: '/dashboard/plans' },
+    { id: 'clients', icon: FileUser , label: 'Clientes', path: '/dashboard/clients' },
+    { id: 'faqs', icon: CircleHelpIcon, label: 'FAQs', path: '/dashboard/faqs' },
+    { id: 'features', icon: LayoutList, label: 'Funcionalidades', path: '/dashboard/features' },
+    { id: 'links', icon: LucideLink, label: 'Links', path: '/dashboard/links' },
+    { id: 'settings', icon: Settings, label: 'Configuración', path: '/dashboard/settings' },
   ];
 
   return (
@@ -29,16 +34,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
         <ul className="space-y-4">
           {menuItems.map((item) => (
             <li key={item.id}>
-              <button
-                onClick={() => setSelectedOption(item.id)}
-                className={`w-full p-3 flex items-center hover:bg-gray-800 transition-colors ${
-                  selectedOption === item.id ? 'bg-blue-600' : ''
-                }`}
-                title={item.label}
-              >
-                <item.icon className="flex-shrink-0 w-6 h-6" />
-                {isExpanded && <span className="ml-3">{item.label}</span>}
-              </button>
+              <Link href={item.path} passHref>
+                <button
+                  onClick={() => setSelectedOption(item.id)}
+                  className={`w-full p-3 flex items-center hover:bg-gray-800 transition-colors ${
+                    selectedOption === item.id ? 'bg-blue-600' : ''
+                  }`}
+                  title={item.label}
+                >
+                  <item.icon className="flex-shrink-0 w-6 h-6" />
+                  {isExpanded && <span className="ml-3">{item.label}</span>}
+                </button>
+              </Link>
             </li>
           ))}
         </ul>
@@ -64,4 +71,3 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
 };
 
 export default Sidebar;
-

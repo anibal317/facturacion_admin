@@ -15,10 +15,10 @@ export default function Footer() {
             return () => window.removeEventListener('resize', updateFooterHeight);
         }
     }, []);
-
+    const currentYear = new Date().getFullYear();
     return (
         <footer ref={footerRef} className="bg-gray-800 p-4 w-full text-center text-white">
-            <div className="flex justify-center space-x-4">
+            {/* <div className="flex justify-center space-x-4">
                 <a href="/about" className="hover:underline">
                     Acerca de
                 </a>
@@ -28,7 +28,8 @@ export default function Footer() {
                 <a href="/privacy" className="hover:underline">
                     Privacidad
                 </a>
-            </div>
+            </div> */}
+            © Bolívar Software {currentYear}. Tu software, nuestra solución. Todos los derechos reservados.
         </footer>
     );
 }

@@ -2,7 +2,6 @@
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import Footer from "../components/footer/Footer";
-import MainContent from "../components/mainContent/MainContent";
 import { useState, useEffect } from 'react';
 
 export default function DashboardLayout({
@@ -19,7 +18,7 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen text-black">
       <div className="flex flex-1">
         {isClient && (
           <Sidebar 
