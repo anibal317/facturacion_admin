@@ -1,27 +1,26 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
+import { Benefits } from '../../../types/types';
+import Spinner from "../../components/spinner/Spinner";
 import Head from 'next/head';
 import DataTable from "../../components/dataTable/DataTable";
-import { Client } from '../../../types/types'; // Asegúrate de que la ruta sea correcta
-import Spinner from "../../components/spinner/Spinner";
 
+export default function faqs() {
+    const [faqs, setFaqs] = useState<Benefits[]>([]);
 
-export default function clients() {
-    const [clients, setClients] = useState<Client[]>([]);
-  
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchClients = async () => {
+        const fetchFaqs = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/clients`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/benefits`);
                 if (!response.ok) {
                     throw new Error("Error fetching clients");
                 }
                 const data = await response.json();
-                setClients(data.data); // Asumiendo que la respuesta tiene la estructura que proporcionaste
+                setFaqs(data.data); // Asumiendo que la respuesta tiene la estructura que proporcionaste
             } catch (error: any) {
                 setError(error.message);
             } finally {
@@ -29,7 +28,7 @@ export default function clients() {
             }
         };
 
-        fetchClients();
+        fetchFaqs();
     }, []);
 
     if (loading) return <Spinner />;
@@ -37,10 +36,10 @@ export default function clients() {
     return (
         <div>
             <Head>
-                <title>Clientes</title>
+                <title>Beneficios</title>
             </Head>
             <h1>Data Table with CRUD Operations</h1>
-            <DataTable initialData={clients} sectionTitle="Clientes" />
+            <DataTable initialData={faqs} sectionTitle="Beneficios" />
         </div>
     )
 };

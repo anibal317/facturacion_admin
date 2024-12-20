@@ -5,23 +5,29 @@ import Button from '@mui/material/Button';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAdd: () => void;
   onSave: () => void;
   onDelete: () => void;
   title: string;
-  content: React.ReactNode;
+  content: React.ReactNode; // Cambia a React.ReactNode para aceptar JSX
   showButtons?: boolean;
-  mode: 'edit' | 'delete' | 'view';
+  mode: 'edit' | 'delete' | 'view' | 'add';
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, onDelete, title, content, showButtons = false, mode }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onAdd, onClose, onSave, onDelete, title, content, showButtons = false, mode }) => {
   if (!isOpen) return null;
 
   const handleSave = () => {
-    onSave()
-  }
+    onSave();
+  };
+
   const handleDelete = () => {
-    onDelete()
-  }
+    onDelete();
+  };
+
+  const handleAdd = () => {
+    onAdd();
+  };
 
   return (
     <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 overflow-auto">
@@ -36,16 +42,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, onDelete, title,
             <X className="w-6 h-6" />
           </button>
         </div>
-        <div className="p-6">
-          {mode === 'view' ? (
-            <>{content}</>
-          ) : mode === 'edit' ? (
-            <>{content}</>
-
-          ) : (
-            <>{content}</>
-
-          )}
+        <div className="p-6 max-h-[70vh] overflow-y-auto">
+          {content} {/* Renderiza el contenido directamente */}
         </div>
         {showButtons && (
           <div className="flex justify-end space-x-4 p-6 border-t">
@@ -53,13 +51,19 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, onDelete, title,
               <Button onClick={handleSave} color="success" className='flex items-center gap-2'>
                 <Save /> Save
               </Button>
+            ) : mode === 'add' ? (
+              <Button onClick={handleAdd} color="success" className='flex items-center gap-2'>
+                <Save /> Save
+              </Button>
             ) : mode === 'delete' ? (
               <Button onClick={handleDelete} color="error" className='flex items-center gap-2'>
                 <Trash2 /> Delete
               </Button>
-            ) : <Button onClick={onClose} color="primary" className='flex items-center gap-2'>
-              Close
-            </Button>}
+            ) : (
+              <Button onClick={onClose} color="primary" className='flex items-center gap-2'>
+                Close
+              </Button>
+            )}
           </div>
         )}
       </div>
@@ -68,4 +72,3 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, onDelete, title,
 };
 
 export default Modal;
-

@@ -14,6 +14,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
 
   const menuItems = [
     { id: 'home', icon: Home, label: 'Inicio', path: '/dashboard' },
+    { id: 'benefits', icon: Settings, label: 'Beneficios', path: '/dashboard/benefits' },
     { id: 'plans', icon: Trophy, label: 'Planes', path: '/dashboard/plans' },
     { id: 'clients', icon: FileUser , label: 'Clientes', path: '/dashboard/clients' },
     { id: 'faqs', icon: CircleHelpIcon, label: 'FAQs', path: '/dashboard/faqs' },

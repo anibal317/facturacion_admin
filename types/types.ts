@@ -37,3 +37,21 @@ export interface Client {
     active: boolean;
     ordering: number;
 }
+
+export interface FAQ {
+    id: number;
+    question: string;
+    answer: string;
+}
+
+export interface Benefits {
+    id: number;
+    icon: string;
+    title: string;
+    description: string;
+    color: string;
+    isStrikethrough: boolean;
+    section: string;
+    active: boolean;
+    ordering: number;
+}
