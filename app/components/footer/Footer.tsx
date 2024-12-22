@@ -17,7 +17,7 @@ export default function Footer() {
     }, []);
     const currentYear = new Date().getFullYear();
     return (
-        <footer ref={footerRef} className="bg-gray-800 p-4 w-full text-center text-white">
+        <footer ref={footerRef} className="bottom-0 sticky bg-gray-800 p-4 w-full text-center text-white">
             {/* <div className="flex justify-center space-x-4">
                 <a href="/about" className="hover:underline">
                     Acerca de

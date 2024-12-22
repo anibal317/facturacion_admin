@@ -34,7 +34,7 @@
     "**/*.ts",
     "prisma/seed.js",
     ".next/types/**/*.ts"
- ],
+, "app/dashboard/links/items/page.tsx" ],
   "exclude": [
     "node_modules"
   ]

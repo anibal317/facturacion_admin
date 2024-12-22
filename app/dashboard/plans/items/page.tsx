@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import Head from 'next/head';
-import DataTable from "../../components/dataTable/DataTable";
-import { PricingPlan } from '../../../types/types'; // Asegúrate de que la ruta sea correcta
-import Spinner from "../../components/spinner/Spinner";
+import DataTable from "../../../components/dataTable/DataTable";
+import { PricingPlan } from '../../../../types/types'; // Asegúrate de que la ruta sea correcta
+import Spinner from "../../../components/spinner/Spinner";
 
 export default function plans() {
     const [plans, setPlans] = useState<PricingPlan[]>([]);
@@ -15,7 +15,7 @@ export default function plans() {
     useEffect(() => {
         const fetchPlans = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/plans`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/planfeatures`);
                 if (!response.ok) {
                     throw new Error("Error fetching clients");
                 }
@@ -39,7 +39,7 @@ export default function plans() {
             </Head>
             <h1>Data Table with CRUD Operations</h1>
 
-            <DataTable initialData={plans} sectionTitle="Planes" excludedHeaders={['planfeature']}/>
+            <DataTable initialData={plans} sectionTitle="Planes" excludedHeaders={['plan']} />
         </div>
     )
 };

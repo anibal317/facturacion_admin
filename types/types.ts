@@ -14,7 +14,8 @@ export interface PlanFeature {
     hasInfo: boolean;
     isPremium: boolean;
     planId: string;
-}
+    active: boolean;
+    ordering: number;}
 
 export interface PricingPlan {
     id: number;
@@ -27,6 +28,8 @@ export interface PricingPlan {
     freeMonths: number | null;
     purchasePoints: string;
     planfeature: PlanFeature[];
+    active: boolean;
+    ordering: number;
 }
 
 export interface Client {
@@ -42,7 +45,8 @@ export interface FAQ {
     id: number;
     question: string;
     answer: string;
-}
+    active: boolean;
+    ordering: number;}
 
 export interface Benefits {
     id: number;

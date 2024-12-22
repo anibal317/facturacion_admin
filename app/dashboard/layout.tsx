@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import Footer from "../components/footer/Footer";
@@ -18,11 +18,12 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen text-black">
-      <div className="flex flex-1">
+    <div className="flex flex-col min-h-screen">
+      {/* Contenedor principal */}
+      <div className="flex flex-1 overflow-hidden">
         {isClient && (
-          <Sidebar 
-            isOpen={isSidebarOpen} 
+          <Sidebar
+            isOpen={isSidebarOpen}
             setIsOpen={setIsSidebarOpen}
             isExpanded={isSidebarExpanded}
             toggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
@@ -30,13 +31,14 @@ export default function DashboardLayout({
         )}
         <div className={`flex-1 flex flex-col ${isSidebarExpanded ? 'md:ml-64' : 'md:ml-16'}`}>
           <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
-          <main className="flex-1 bg-gray-100 p-6">
+          {/* Área de contenido con scroll vertical */}
+          <main className="flex-1 bg-gray-100 p-6 overflow-auto">
             {children}
           </main>
         </div>
       </div>
-      <Footer />
+      {/* Footer sticky */}
+      <Footer  />
     </div>
   );
 }
-
