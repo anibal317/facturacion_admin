@@ -26,20 +26,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
     { id: 'home', icon: Home, label: 'Inicio', path: '/dashboard', subItems: [] },
     { id: 'benefits', icon: Settings, label: 'Beneficios', path: '/dashboard/benefits', subItems: [] },
     { id: 'plans', icon: Trophy, label: 'Planes', path: '', subItems: [
-      { id: 'list-plans', icon: LayoutList, label: 'Navegación principal', path: '/dashboard/plans' },
-      { id: 'list-plans-items', icon: Trophy, label: 'Items', path: '/dashboard/plans/items' },
+      { id: 'list-plans', icon: LayoutList, label: 'Tipos de Planes', path: '/dashboard/plans' },
+      { id: 'list-plans-items', icon: Trophy, label: 'Funcionalidades', path: '/dashboard/plans/items' },
     ] },
     { id: 'clients', icon: FileUser , label: 'Clientes', path: '/dashboard/clients', subItems: [] },
     { id: 'faqs', icon: CircleHelpIcon, label: 'FAQs', path: '/dashboard/faqs', subItems: [] },
     { id: 'features', icon: LayoutList, label: 'Funcionalidades', path: '', subItems: [
-      { id: 'list-features', icon: LayoutList, label: 'Grupo de Funcionalidad', path: '/dashboard/features' },
-      { id: 'list-plan-items', icon: Trophy, label: 'Items', path: '/dashboard/features/items' },
+      { id: 'list-features', icon: LayoutList, label: 'Funcionalidades', path: '/dashboard/features' },
+      { id: 'list-plan-items', icon: Trophy, label: 'Características', path: '/dashboard/features/items' },
     ] },
     {
       id: 'links', icon: LucideLink, label: 'Links', path: '',
       subItems: [
         { id: 'list-navigation', icon: LayoutList, label: 'Navegación principal', path: '/dashboard/links' },
-        { id: 'list-nav-items', icon: Trophy, label: 'Items', path: '/dashboard/links/items' },
+        { id: 'list-nav-items', icon: Trophy, label: 'Links', path: '/dashboard/links/items' },
       ]
     },
     { id: 'settings', icon: Settings, label: 'Configuración', path: '/dashboard/settings', subItems: [] },

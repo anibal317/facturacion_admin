@@ -59,3 +59,20 @@ export interface Benefits {
     active: boolean;
     ordering: number;
 }
+
+export interface Features {
+    id: number;
+    title: string;
+    description: string;
+    video: boolean;
+    videoLink: string;
+    items: Item[];
+}
+
+export interface Item {
+    id: number;
+    text: string;
+    featureId: number;
+    parentId: number | null;
+    children: Item[];
+}
