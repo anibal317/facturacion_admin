@@ -120,28 +120,28 @@ export async function DELETE(req: Request) {
   }
 }
 
-// export async function ACTIVATE(req: Request) {
-//   try {
-//     const { searchParams } = new URL(req.url);
-//     const id = searchParams.get('id');
+export async function PATCH(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
 
-//     if (!id) {
-//       return NextResponse.json({ error: 'ID is required to activate a benefit' }, {
-//         status: 400,
-//       });
-//     }
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required to activate a benefit' }, {
+        status: 400,
+      });
+    }
 
-//     const activatedBenefit = await prisma.benefit.update({
-//       where: { id: parseInt(id, 10) },
-//       data: { active: true },
-//     });
+    const activatedBenefit = await prisma.benefit.update({
+      where: { id: parseInt(id, 10) },
+      data: { active: true },
+    });
 
-//     return NextResponse.json(activatedBenefit, {
-//       status: 200,
-//     });
-//   } catch (error) {
-//     return NextResponse.json({ error: 'Error activating benefit' }, {
-//       status: 500,
-//     });
-//   }
-// }
+    return NextResponse.json(activatedBenefit, {
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error activating benefit' }, {
+      status: 500,
+    });
+  }
+}
