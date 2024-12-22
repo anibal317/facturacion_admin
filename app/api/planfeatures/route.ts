@@ -95,28 +95,28 @@ export async function DELETE(req: Request) {
 }
 
 // ACTIVATE: Set activate to true
-// export async function ACTIVATE(req: Request) {
-//   try {
-//     const { searchParams } = new URL(req.url);
-//     const id = searchParams.get('id');
+export async function PATCH(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
 
-//     if (!id) {
-//       return NextResponse.json({ error: 'ID is required to activate a plan feature' }, {
-//         status: 400,
-//       });
-//     }
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required to activate a plan feature' }, {
+        status: 400,
+      });
+    }
 
-//     const activatedPlanFeature = await prisma.planfeature.update({
-//       where: { id: parseInt(id, 10) },
-//       data: { active: true },
-//     });
+    const activatedPlanFeature = await prisma.planfeature.update({
+      where: { id: parseInt(id, 10) },
+      data: { active: true },
+    });
 
-//     return NextResponse.json(activatedPlanFeature, {
-//       status: 200,
-//     });
-//   } catch (error) {
-//     return NextResponse.json({ error: 'Error activating plan feature' }, {
-//       status: 500,
-//     });
-//   }
-// }
+    return NextResponse.json(activatedPlanFeature, {
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error activating plan feature' }, {
+      status: 500,
+    });
+  }
+}

@@ -124,7 +124,6 @@ export async function PATCH(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
-
     if (!id) {
       return NextResponse.json({ error: 'ID is required to activate a benefit' }, {
         status: 400,

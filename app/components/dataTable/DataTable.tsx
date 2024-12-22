@@ -21,10 +21,12 @@ import { ToggleRight, ToggleLeft, Eye, Edit, Trash2, Plus, Info } from 'lucide-r
 import Modal from "../modal/Modal";
 import DynamicForm from "../form/DynamicForm";
 import * as LucideIcons from 'lucide-react';
+import Swal from 'sweetalert2'
 
 interface DataTableProps {
   initialData: any[];
   sectionTitle: string;
+  endpoint?: string;
   excludedHeaders?: string[]
 }
 
@@ -33,7 +35,7 @@ interface FlexibleObject {
 }
 
 
-const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, excludedHeaders = [] }) => {
+const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, excludedHeaders = [], endpoint }) => {
   const [recordsToShow, setRecordsToShow] = useState<number>(5);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [openAddModal, setOpenAddModal] = useState<boolean>(false);
@@ -81,8 +83,70 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
       setFilteredData(initialData); // Restaura los datos originales si no hay filtro
     }
   };
-  const handleToggleActive = (index: number) => {
-    console.log(index);
+
+  const handleToggleActive = async (index: number) => {
+    const idABuscar = index;
+  
+    for (let i = 0; i < currentData.length; i++) {
+      if (currentData[i].id === idABuscar) {
+        // Almacena el estado anterior
+        const previousActiveState = currentData[i].active;
+  
+        // Cambia el estado de 'active'
+        currentData[i].active = !currentData[i].active;
+  
+        // Muestra el spinner de carga
+        Swal.fire({
+          title: 'Cargando...',
+          html: 'Por favor, espera mientras se actualiza el estado.',
+          allowOutsideClick: false,
+        });
+  
+        // Muestra el loading spinner
+        Swal.showLoading();
+  
+        try {
+          let res;
+          if (!currentData[i].active) {
+            res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${endpoint}?id=${index}`, { method: "DELETE" });
+          } else {
+            res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${endpoint}?id=${index}`, { method: "PATCH" });
+          }
+  
+          if (!res.ok) {
+            // Si la respuesta no es ok, lanza un error
+            const errorData = await res.json(); // Puedes obtener más información del error
+            throw new Error(errorData.message || 'Error desconocido');
+          }
+  
+          // Cierra el spinner de carga
+          Swal.close();
+  
+          Swal.fire({
+            title: 'OK',
+            text: 'El beneficio fue actualizado correctamente',
+            icon: 'success',
+          });
+        } catch (error: any) {
+          console.error(error);
+          // Revertir el estado al anterior en caso de error
+          currentData[i].active = previousActiveState;
+  
+          // Cierra el spinner de carga
+          Swal.close();
+  
+          Swal.fire({
+            title: 'Error!',
+            text: error.message || 'Hubo un error al cambiar el estado del beneficio',
+            icon: 'error',
+          });
+        }
+  
+        // Actualiza el estado de currentData
+        setCurrentData([...currentData]); // Asegúrate de crear una nueva referencia para que React detecte el cambio
+        break; // Salimos del bucle una vez que encontramos el elemento
+      }
+    }
   };
 
   const handleAdd = () => {

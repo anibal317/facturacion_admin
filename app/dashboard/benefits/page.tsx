@@ -39,7 +39,7 @@ export default function faqs() {
                 <title>Beneficios</title>
             </Head>
             <h1>Data Table with CRUD Operations</h1>
-            <DataTable initialData={faqs} sectionTitle="Beneficios"/>
+            <DataTable initialData={faqs} sectionTitle="Beneficios" endpoint="benefits"/>
         </div>
     )
 };
