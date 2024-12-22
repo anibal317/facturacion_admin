@@ -32,7 +32,7 @@ interface FlexibleObject {
 }
 
 
-const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, excludedHeaders=[] }) => {
+const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, excludedHeaders = [] }) => {
   const [recordsToShow, setRecordsToShow] = useState<number>(5);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [openAddModal, setOpenAddModal] = useState<boolean>(false);
@@ -120,64 +120,120 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
   const startIndex = (currentPage - 1) * recordsToShow;
   const endIndex = startIndex + recordsToShow;
   const currentData = initialData.slice(startIndex, endIndex);
-  // const headers = Object.keys(initialData[0] || {});
-
-  const renderContent = (content: any, action: string, disabledFields?: string[]) => {
-
-    return (<>
-      {action === 'view' ? (
-        <div className="flex flex-col items-center">
-          {content.img && (
-            <img
-              src={'https://facturacionale.netlify.app' + content.img}
-              alt={content.name}
-              className="border-2 border-gray-600 mb-4 p-1 w-[50%] h-auto object-cover"
-            />
-          )}
-          {Object.keys(content).map((key) => {
-            if (key === 'icon' && typeof content[key] === 'string') {
-              const iconName = content[key];
+  /*
+    const renderContent = (content: any, action: string, disabledFields?: string[]) => {
+      return (<>
+        {action === 'view' ? (
+          <div className="flex flex-col items-center">
+            {content.img && (
+              <img
+                src={'https://facturacionale.netlify.app' + content.img}
+                alt={content.name}
+                className="border-2 border-gray-600 mb-4 p-1 w-[50%] h-auto object-cover"
+              />
+            )}
+            {Object.keys(content).map((key) => {
+              if (key === 'icon' && typeof content[key] === 'string') {
+                const iconName = content[key];
+                return (
+                  <div key={key} className="text-gray-600">
+                    <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>
+                    {iconName in SafeLucideIcons &&
+                      isLucideIcon(SafeLucideIcons[iconName]) ? (
+                      React.createElement(SafeLucideIcons[iconName])
+                    ) : (
+                      <span>Icon not found</span>
+                    )}
+                  </div>
+                );
+              }
               return (
                 <div key={key} className="text-gray-600">
                   <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>
-                  {iconName in SafeLucideIcons &&
-                    isLucideIcon(SafeLucideIcons[iconName]) ? (
-                    React.createElement(SafeLucideIcons[iconName])
-                  ) : (
-                    <span>Icon not found</span>
-                  )}
+                  {typeof content[key] === 'boolean'
+                    ? content[key] ? 'true' : 'false'
+                    : content[key]}
                 </div>
               );
-            }
-            return (
-              <div key={key} className="text-gray-600">
-                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>
-                {typeof content[key] === 'boolean'
-                  ? content[key] ? 'true' : 'false'
-                  : content[key]}
-              </div>
-            );
-          })}
-          {content.link && (
-            <a
-              href={content.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 text-blue-500 hover:underline"
-            >
-              Visit Website
-            </a>
-          )}
-        </div>
-      ) : action === "add" ? (<>
-        <DynamicForm data={content} onSave={handleSaveEdit} onCancel={() => setOpenEditModal(false)} disabledFields={disabledFields} />
-      </>) : action === "edit" ? (<>
-        <DynamicForm data={content} onSave={handleSaveEdit} onCancel={() => setOpenEditModal(false)} disabledFields={disabledFields} />
-      </>) : <>Otro</>}
+            })}
+            {content.link && (
+              <a
+                href={content.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 text-blue-500 hover:underline"
+              >
+                Visit Website
+              </a>
+            )}
+          </div>
+        ) : action === "add" ? (<>
+          <DynamicForm data={content} onSave={handleSaveEdit} onCancel={() => setOpenEditModal(false)} disabledFields={disabledFields} />
+        </>) : action === "edit" ? (<>
+          <DynamicForm data={content} onSave={handleSaveEdit} onCancel={() => setOpenEditModal(false)} disabledFields={disabledFields} />
+        </>) : <>Otro</>}
+  
+      </>
+      )
+    }
+  */
+  const renderContent = (content: any, action: string, disabledFields?: string[]) => {
+    const handleShowDetailedInfo = (key: string, value: any) => {
+      setSelectedFeatures([{ key, value }]);
+      setOpenFeaturesModal(true);
+    };
 
-    </>
-    )
-  }
+    return (
+      <>
+        {action === 'view' ? (
+          <div className="flex flex-col space-y-2">
+            {Object.keys(content).map((key) => {
+              const value = content[key];
+
+              // Omitir campos definidos en excludedHeaders o valores nulos/vacíos
+              if (excludedHeaders.includes(key) || value == null || value === '') {
+                return (
+                  <div key={key} className="text-gray-600">
+                    <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>
+                    <span className="ml-2">N/A</span>
+                  </div>
+                );
+              }
+
+              return (
+                <div key={key} className="flex justify-between items-center text-gray-600">
+                  <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>
+                  <span>
+                    {typeof value === 'object' ? (
+                      <span
+                        className="text-blue-500 underline cursor-pointer"
+                        onClick={() => handleShowDetailedInfo(key, value)}
+                      >
+                        (Ver Detalle)
+                      </span>
+                    ) : (
+                      value.toString()
+                    )}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        ) : action === 'add' || action === 'edit' ? (
+          <DynamicForm
+            data={content}
+            onSave={handleSaveEdit}
+            onCancel={() => setOpenEditModal(false)}
+            disabledFields={disabledFields}
+          />
+        ) : (
+          <>Otro</>
+        )}
+      </>
+    );
+  };
+
+
 
   const renderFeatureContent = (features: FlexibleObject[] | null) => {
     if (!features) return null;
