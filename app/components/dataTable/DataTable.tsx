@@ -120,63 +120,7 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
   const startIndex = (currentPage - 1) * recordsToShow;
   const endIndex = startIndex + recordsToShow;
   const currentData = initialData.slice(startIndex, endIndex);
-  /*
-    const renderContent = (content: any, action: string, disabledFields?: string[]) => {
-      return (<>
-        {action === 'view' ? (
-          <div className="flex flex-col items-center">
-            {content.img && (
-              <img
-                src={'https://facturacionale.netlify.app' + content.img}
-                alt={content.name}
-                className="border-2 border-gray-600 mb-4 p-1 w-[50%] h-auto object-cover"
-              />
-            )}
-            {Object.keys(content).map((key) => {
-              if (key === 'icon' && typeof content[key] === 'string') {
-                const iconName = content[key];
-                return (
-                  <div key={key} className="text-gray-600">
-                    <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>
-                    {iconName in SafeLucideIcons &&
-                      isLucideIcon(SafeLucideIcons[iconName]) ? (
-                      React.createElement(SafeLucideIcons[iconName])
-                    ) : (
-                      <span>Icon not found</span>
-                    )}
-                  </div>
-                );
-              }
-              return (
-                <div key={key} className="text-gray-600">
-                  <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>
-                  {typeof content[key] === 'boolean'
-                    ? content[key] ? 'true' : 'false'
-                    : content[key]}
-                </div>
-              );
-            })}
-            {content.link && (
-              <a
-                href={content.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 text-blue-500 hover:underline"
-              >
-                Visit Website
-              </a>
-            )}
-          </div>
-        ) : action === "add" ? (<>
-          <DynamicForm data={content} onSave={handleSaveEdit} onCancel={() => setOpenEditModal(false)} disabledFields={disabledFields} />
-        </>) : action === "edit" ? (<>
-          <DynamicForm data={content} onSave={handleSaveEdit} onCancel={() => setOpenEditModal(false)} disabledFields={disabledFields} />
-        </>) : <>Otro</>}
-  
-      </>
-      )
-    }
-  */
+ 
   const renderContent = (content: any, action: string, disabledFields?: string[]) => {
     const handleShowDetailedInfo = (key: string, value: any) => {
       setSelectedFeatures([{ key, value }]);
