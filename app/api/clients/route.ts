@@ -45,3 +45,102 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Error fetching clients' }, { status: 500 });
   }
 }
+
+
+// POST: Create a new link
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const newClient = await prisma.client.create({
+      data: body,
+    });
+    return NextResponse.json(newClient, {
+      status: 201,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error creating Client' }, {
+      status: 500,
+    });
+  }
+}
+
+// PUT: Update an existing link by ID
+export async function PUT(req: Request) {
+  try {
+    const body = await req.json();
+    const { id, ...data } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required to update a client' }, {
+        status: 400,
+      });
+    }
+
+    const updatedClient = await prisma.client.update({
+      where: { id },
+      data,
+    });
+
+    return NextResponse.json(updatedClient, {
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error updating client' }, {
+      status: 500,
+    });
+  }
+}
+
+// DELETE: Set activate to false
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required to deactivate a client' }, {
+        status: 400,
+      });
+    }
+
+    const deactivatedClient = await prisma.client.update({
+      where: { id: parseInt(id, 10) },
+      data: { active: false },
+    });
+
+    return NextResponse.json(deactivatedClient, {
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error deactivating client' }, {
+      status: 500,
+    });
+  }
+}
+
+// ACTIVATE: Set activate to true
+export async function ACTIVATE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required to activate a client' }, {
+        status: 400,
+      });
+    }
+
+    const activatedClient = await prisma.client.update({
+      where: { id: parseInt(id, 10) },
+      data: { active: true },
+    });
+
+    return NextResponse.json(activatedClient, {
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error activating client' }, {
+      status: 500,
+    });
+  }
+}

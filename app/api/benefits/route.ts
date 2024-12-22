@@ -52,3 +52,96 @@ export async function GET(request: Request) {
   }
 }
 
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const newBenefits = await prisma.benefit.create({
+      data: body,
+    });
+    return NextResponse.json(newBenefits, {
+      status: 201,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error creating link' }, {
+      status: 500,
+    });
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const body = await req.json();
+    const { id, ...data } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required to update a link' }, {
+        status: 400,
+      });
+    }
+
+    const updatedBenefit = await prisma.benefit.update({
+      where: { id },
+      data,
+    });
+
+    return NextResponse.json(updatedBenefit, {
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error updating link' }, {
+      status: 500,
+    });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required to deactivate a Benefit' }, {
+        status: 400,
+      });
+    }
+
+    const deactivatedBenefit = await prisma.benefit.update({
+      where: { id: parseInt(id, 10) },
+      data: { active: false },
+    });
+
+    return NextResponse.json(deactivatedBenefit, {
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error deactivating Benefit' }, {
+      status: 500,
+    });
+  }
+}
+
+export async function ACTIVATE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required to activate a benefit' }, {
+        status: 400,
+      });
+    }
+
+    const activatedBenefit = await prisma.benefit.update({
+      where: { id: parseInt(id, 10) },
+      data: { active: true },
+    });
+
+    return NextResponse.json(activatedBenefit, {
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error activating benefit' }, {
+      status: 500,
+    });
+  }
+}
