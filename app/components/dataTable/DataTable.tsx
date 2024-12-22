@@ -15,6 +15,7 @@ import {
   InputLabel,
   FormControl,
   Pagination,
+  TextField,
 } from '@mui/material';
 import { ToggleRight, ToggleLeft, Eye, Edit, Trash2, Plus, Info } from 'lucide-react';
 import Modal from "../modal/Modal";
@@ -44,6 +45,8 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
   const [openFeaturesModal, setOpenFeaturesModal] = useState<boolean>(false);
   const [selectedFeatures, setSelectedFeatures] = useState<FlexibleObject[] | null>(null);
   const [selectedPlan, setSelectedPlans] = useState<FlexibleObject[] | null>(null);
+  const [filterValue, setFilterValue] = useState<string>(''); // Valor a filtrar
+  const [filteredData, setFilteredData] = useState(initialData); // Datos filtrados
 
   const handleShowFeatures = (features: FlexibleObject[] | FlexibleObject) => {
     const featureArray = Array.isArray(features) ? features : [features];
@@ -65,6 +68,19 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
     return keys.filter(key => !excludedHeaders.includes(key));
   }, [initialData]);
 
+  const [selectedColumn, setSelectedColumn] = useState<string>(headers[0] || ''); // Columna seleccionada
+
+  const handleFilter = () => {
+    if (selectedColumn && filterValue) {
+      const filtered = initialData.filter(item =>
+        String(item[selectedColumn]).toLowerCase().includes(filterValue.toLowerCase())
+      );
+      setFilteredData(filtered);
+      setCurrentPage(1); // Reinicia la paginación al filtrar
+    } else {
+      setFilteredData(initialData); // Restaura los datos originales si no hay filtro
+    }
+  };
   const handleToggleActive = (index: number) => {
     console.log(index);
   };
@@ -119,8 +135,9 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
 
   const startIndex = (currentPage - 1) * recordsToShow;
   const endIndex = startIndex + recordsToShow;
-  const currentData = initialData.slice(startIndex, endIndex);
- 
+  // const currentData = initialData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
+
   const renderContent = (content: any, action: string, disabledFields?: string[]) => {
     const handleShowDetailedInfo = (key: string, value: any) => {
       setSelectedFeatures([{ key, value }]);
@@ -246,6 +263,32 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
             <Plus /> Agregar
           </Button>
         </FormControl>
+        <div className="flex items-center gap-4 mb-4">
+          <FormControl variant="outlined" className="w-1/4">
+            <InputLabel>Columna</InputLabel>
+            <Select
+              value={selectedColumn}
+              onChange={(e) => setSelectedColumn(e.target.value)}
+              label="Columna"
+            >
+              {headers.map((header) => (
+                <MenuItem key={header} value={header}>
+                  {header.charAt(0).toUpperCase() + header.slice(1)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
+            className="w-1/4"
+            label="Valor"
+            variant="outlined"
+            value={filterValue}
+            onChange={(e) => setFilterValue(e.target.value)}
+          />
+          <Button variant="contained" color="primary" onClick={handleFilter}>
+            Filtrar
+          </Button>
+        </div>
       </div>
       <TableContainer component={Paper}>
         <Table>

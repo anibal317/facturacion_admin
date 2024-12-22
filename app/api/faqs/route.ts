@@ -121,31 +121,31 @@ export async function DELETE(req: Request) {
 }
 
 // ACTIVATE: Set activate to true
-export async function ACTIVATE(req: Request) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
+// export async function ACTIVATE(req: Request) {
+//   try {
+//     const { searchParams } = new URL(req.url);
+//     const id = searchParams.get('id');
 
-    if (!id) {
-      return NextResponse.json({ error: 'ID is required to activate a faq' }, {
-        status: 400,
-      });
-    }
+//     if (!id) {
+//       return NextResponse.json({ error: 'ID is required to activate a faq' }, {
+//         status: 400,
+//       });
+//     }
 
-    const activatedFaq = await prisma.faq.update({
-      where: { id: parseInt(id, 10) },
-      data: { active: true },
-    });
+//     const activatedFaq = await prisma.faq.update({
+//       where: { id: parseInt(id, 10) },
+//       data: { active: true },
+//     });
 
-    return NextResponse.json(activatedFaq, {
-      status: 200,
-    });
-  } catch (error) {
-    return NextResponse.json({ error: 'Error activating faq' }, {
-      status: 500,
-    });
-  }
-}
+//     return NextResponse.json(activatedFaq, {
+//       status: 200,
+//     });
+//   } catch (error) {
+//     return NextResponse.json({ error: 'Error activating faq' }, {
+//       status: 500,
+//     });
+//   }
+// }
 
 
 // Manejo de solicitudes OPTIONS
