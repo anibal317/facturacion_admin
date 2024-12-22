@@ -31,7 +31,7 @@
     "moduleResolution": "node"
   },
   "include": [
-    "**/*.ts",
+    "**/*.tsx",
     "prisma/seed.js",
     ".next/types/**/*.ts"
 , "app/dashboard/links/items/page.tsx" ],
