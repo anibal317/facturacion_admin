@@ -15,7 +15,7 @@ export default function faqs() {
     useEffect(() => {
         const fetchFaqs = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/benefits`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/benefits?all=true`);
                 if (!response.ok) {
                     throw new Error("Error fetching clients");
                 }

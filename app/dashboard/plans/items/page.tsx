@@ -39,7 +39,7 @@ export default function plans() {
             </Head>
             <h1>Data Table with CRUD Operations</h1>
 
-            <DataTable initialData={plans} sectionTitle="Planes" excludedHeaders={['plan']} />
+            <DataTable initialData={plans} sectionTitle="Planes" excludedHeaders={['plan']} endpoint="planfeatures"/>
         </div>
     )
 };

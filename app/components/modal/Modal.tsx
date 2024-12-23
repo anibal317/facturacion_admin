@@ -1,32 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Save, Trash2, X } from 'lucide-react';
 import Button from '@mui/material/Button';
+import DynamicForm from '../form/DynamicForm';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAdd: () => void;
-  onSave: () => void;
+  onSave: (data: any) => void; // Cambia la firma para recibir datos
   onDelete: () => void;
   title: string;
-  content: React.ReactNode; // Cambia a React.ReactNode para aceptar JSX
+  content: any; // Cambia a 'any' para que sea más flexible
   showButtons?: boolean;
   mode: 'edit' | 'delete' | 'view' | 'add';
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onAdd, onClose, onSave, onDelete, title, content, showButtons = false, mode }) => {
+  const [formData, setFormData] = useState<any>(content); // Estado para almacenar los datos del formulario
+
+  useEffect(() => {
+    setFormData(content); // Actualiza el estado del formulario cuando el contenido cambia
+  }, [content]);
+
   if (!isOpen) return null;
 
   const handleSave = () => {
-    onSave();
-  };
-
-  const handleDelete = () => {
-    onDelete();
-  };
-
-  const handleAdd = () => {
-    onAdd();
+    console.log(formData); // Aquí se imprimen los datos del formulario
+    onSave(formData); // Llama a onSave con los datos del formulario
+    onClose(); // Cierra el modal
   };
 
   return (
@@ -43,25 +44,27 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onAdd, onClose, onSave, onDelete,
           </button>
         </div>
         <div className="p-6 max-h-[70vh] overflow-y-auto">
-          {content} {/* Renderiza el contenido directamente */}
+          {mode === 'add' || mode === 'edit' ? (
+            <DynamicForm
+              data={formData} // Pasa el estado del formulario
+              onSave={(updatedData) => setFormData(updatedData)} // Actualiza el estado con los datos guardados
+              disabledFields={['id']}
+              hide={['planfeature']}
+            />
+          ) : (
+            content
+          )}
         </div>
         {showButtons && (
           <div className="flex justify-end space-x-4 p-6 border-t">
-            {mode === 'edit' ? (
+            {(mode === 'edit' || mode === 'add') && (
               <Button onClick={handleSave} color="success" className='flex items-center gap-2'>
                 <Save /> Save
               </Button>
-            ) : mode === 'add' ? (
-              <Button onClick={handleAdd} color="success" className='flex items-center gap-2'>
-                <Save /> Save
-              </Button>
-            ) : mode === 'delete' ? (
-              <Button onClick={handleDelete} color="error" className='flex items-center gap-2'>
+            )}
+            {mode === 'delete' && (
+              <Button onClick={onDelete} color="error" className='flex items-center gap-2'>
                 <Trash2 /> Delete
-              </Button>
-            ) : (
-              <Button onClick={onClose} color="primary" className='flex items-center gap-2'>
-                Close
               </Button>
             )}
           </div>
@@ -70,5 +73,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onAdd, onClose, onSave, onDelete,
     </div>
   );
 };
-
 export default Modal;

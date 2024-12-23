@@ -1,35 +1,54 @@
-import { PrismaClient } from '@prisma/client';
+import { BenefitSection, PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
+interface WhereClause {
+  section?: BenefitSection; // Cambia el tipo a BenefitSection
+  active?: boolean;
+}
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const sec = url.searchParams.get('sec');
+  const sec = url.searchParams.get('sec'); // Obtener el parámetro de sección
+  const showAll = url.searchParams.get('all') === 'true'; // Verificar si se deben mostrar todos
+
   const page = parseInt(url.searchParams.get('page') || '1', 10);
-  const pageSize = parseInt(url.searchParams.get('pageSize') || '10', 10);
+  const pageSize = parseInt(url.searchParams.get('pageSize') || '0', 10); // Cambia el valor por defecto a 0
   const skip = (page - 1) * pageSize;
 
   try {
-    let whereClause = {};
-    if (sec) {
-      whereClause = { section: sec.toUpperCase(),active:true };
+    let whereClause: WhereClause = {};
+
+    // Si showAll es true, no filtramos por 'active'
+    if (showAll) {
+      // Si se solicita 'all', no filtramos por 'active'
+      if (sec) {
+        // Si se proporciona 'sec', filtramos por sección
+        whereClause.section = sec.toUpperCase() as BenefitSection; // Convierte a enum
+      }
+    } else {
+      // Si no se solicita 'all', solo obtenemos activos
+      whereClause.active = true; // Solo activos por defecto
+      if (sec) {
+        // Si se proporciona 'sec', filtramos por sección
+        whereClause.section = sec.toUpperCase() as BenefitSection; // Convierte a enum
+      }
     }
 
-    const [benefits, totalItems] = await Promise.all([
-      prisma.benefit.findMany({
-        where: whereClause,
-        orderBy: [
-          { ordering: 'asc' },
-          { id: 'asc' }
-        ],
-        skip: pageSize === 0 ? undefined : skip,
-        take: pageSize === 0 ? undefined : pageSize,
-      }),
-      prisma.benefit.count({ where: whereClause })
-    ]);
+    // Si pageSize es 0, obtenemos todos los elementos
+    const benefits = await prisma.benefit.findMany({
+      where: whereClause,
+      orderBy: [
+        { ordering: 'asc' },
+        { id: 'asc' }
+      ],
+      skip: pageSize > 0 ? skip : undefined, // Solo aplica skip si pageSize es mayor que 0
+      take: pageSize > 0 ? pageSize : undefined, // Solo aplica limit si pageSize es mayor que 0
+    });
 
-    const totalPages = pageSize === 0 ? 1 : Math.ceil(totalItems / pageSize);
+    // Si no se proporciona 'pageSize', contamos todos los elementos
+    const totalItems = await prisma.benefit.count({ where: whereClause });
+    const totalPages = pageSize > 0 ? Math.ceil(totalItems / pageSize) : 1; // Si pageSize es 0, totalPages es 1
 
     const baseUrl = `${process.env.BASE_URL}${url.pathname}`;
     const prevPage = page > 1 ? `${baseUrl}?page=${page - 1}&pageSize=${pageSize}${sec ? `&sec=${sec}` : ''}` : null;

@@ -15,7 +15,7 @@ export default function faqs() {
     useEffect(() => {
         const fetchFaqs = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/faqs`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/faqs?all=true`);
                 if (!response.ok) {
                     throw new Error("Error fetching clients");
                 }
@@ -39,7 +39,7 @@ export default function faqs() {
                 <title>Clientes</title>
             </Head>
             <h1>Data Table with CRUD Operations</h1>
-            <DataTable initialData={faqs} sectionTitle="Preguntas Frecuentes" />
+            <DataTable initialData={faqs} sectionTitle="Preguntas Frecuentes" endpoint="faqs" />
         </div>
     )
 };

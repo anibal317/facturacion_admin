@@ -5,14 +5,19 @@ const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
+  const showAll = url.searchParams.get('all') === 'true';
+
   const page = parseInt(url.searchParams.get('page') || '1', 10);
   const pageSize = parseInt(url.searchParams.get('pageSize') || '10', 10);
   const skip = (page - 1) * pageSize;
 
   try {
+    const whereClause = showAll ? {} : { active: true };
+
     const [client, totalItems] = await Promise.all([
       prisma.client.findMany({
-        where: { active: true }, // Solo filtra por 'active'
+        where: whereClause,
+
         orderBy: [
           { ordering: 'asc' },
           { id: 'asc' }

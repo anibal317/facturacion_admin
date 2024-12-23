@@ -39,7 +39,7 @@ export default function features() {
                 <title>Beneficios</title>
             </Head>
             <h1>Data Table with CRUD Operations</h1>
-            <DataTable initialData={faqs} sectionTitle="Beneficios"  excludedHeaders={['items']}/>
+            <DataTable initialData={faqs} sectionTitle="Beneficios"  excludedHeaders={['items']} endpoint="features"/>
         </div>
     )
 };

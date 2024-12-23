@@ -16,7 +16,7 @@ export default function clients() {
     useEffect(() => {
         const fetchClients = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/clients`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/clients?all=true`);
                 if (!response.ok) {
                     throw new Error("Error fetching clients");
                 }
@@ -40,7 +40,7 @@ export default function clients() {
                 <title>Clientes</title>
             </Head>
             <h1>Data Table with CRUD Operations</h1>
-            <DataTable initialData={clients} sectionTitle="Clientes" />
+            <DataTable initialData={clients} sectionTitle="Clientes" endpoint="clients"/>
         </div>
     )
 };

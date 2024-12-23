@@ -17,7 +17,7 @@ import {
   Pagination,
   TextField,
 } from '@mui/material';
-import { ToggleRight, ToggleLeft, Eye, Edit, Trash2, Plus, Info } from 'lucide-react';
+import { ToggleRight, ToggleLeft, Eye, Edit, Trash2, Plus, Info, Search, FilterX } from 'lucide-react';
 import Modal from "../modal/Modal";
 import DynamicForm from "../form/DynamicForm";
 import * as LucideIcons from 'lucide-react';
@@ -83,28 +83,33 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
       setFilteredData(initialData); // Restaura los datos originales si no hay filtro
     }
   };
+  const handleResetFilter = () => {
+    setFilterValue(''); // Restablece el valor del filtro
+    setFilteredData(initialData); // Restaura los datos filtrados a los datos originales
+    setCurrentPage(1); // Reinicia la paginación
+  };
 
   const handleToggleActive = async (index: number) => {
     const idABuscar = index;
-  
+
     for (let i = 0; i < currentData.length; i++) {
       if (currentData[i].id === idABuscar) {
         // Almacena el estado anterior
         const previousActiveState = currentData[i].active;
-  
+
         // Cambia el estado de 'active'
         currentData[i].active = !currentData[i].active;
-  
+
         // Muestra el spinner de carga
         Swal.fire({
           title: 'Cargando...',
           html: 'Por favor, espera mientras se actualiza el estado.',
           allowOutsideClick: false,
         });
-  
+
         // Muestra el loading spinner
         Swal.showLoading();
-  
+
         try {
           let res;
           if (!currentData[i].active) {
@@ -112,16 +117,16 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
           } else {
             res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${endpoint}?id=${index}`, { method: "PATCH" });
           }
-  
+
           if (!res.ok) {
             // Si la respuesta no es ok, lanza un error
             const errorData = await res.json(); // Puedes obtener más información del error
             throw new Error(errorData.message || 'Error desconocido');
           }
-  
+
           // Cierra el spinner de carga
           Swal.close();
-  
+
           Swal.fire({
             title: 'OK',
             text: 'El beneficio fue actualizado correctamente',
@@ -131,17 +136,17 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
           console.error(error);
           // Revertir el estado al anterior en caso de error
           currentData[i].active = previousActiveState;
-  
+
           // Cierra el spinner de carga
           Swal.close();
-  
+
           Swal.fire({
             title: 'Error!',
             text: error.message || 'Hubo un error al cambiar el estado del beneficio',
             icon: 'error',
           });
         }
-  
+
         // Actualiza el estado de currentData
         setCurrentData([...currentData]); // Asegúrate de crear una nueva referencia para que React detecte el cambio
         break; // Salimos del bucle una vez que encontramos el elemento
@@ -155,6 +160,7 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
     setCurrentData({ ...headers.reduce((acc, key) => ({ ...acc, [key]: '' }), {}), ordering: 1 });
     setOpenAddModal(true);
   };
+
 
   const handleEdit = (userData: any) => {
     setCurrentData(userData); // Establece los datos del usuario en el estado
@@ -172,11 +178,11 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
   };
 
   const handleSaveEdit = (editedData: any) => {
-    const updatedData = initialData.map((item: any) => (item.id === editedData.id ? editedData : item));
-    setCurrentData(updatedData);
-    setOpenEditModal(false);
+    // const updatedData = initialData.map((item: any) => (item.id === editedData.id ? editedData : item));
+    // setCurrentData(updatedData);
+    // setOpenEditModal(false);
+    console.log('Saved Data:', editedData); // Log the saved data
   };
-
 
   const handleConfirmDelete = (userData: any) => {
     const updatedData = initialData.filter((item: any) => item.id !== userData.id);
@@ -184,9 +190,6 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
     setOpenDeleteModal(false);
   };
 
-  const isLucideIcon = (icon: any): icon is React.ComponentType<React.SVGProps<SVGSVGElement>> => {
-    return typeof icon === 'function' || (typeof icon === 'object' && icon.$$typeof);
-  };
 
   type LucideIconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
   type LucideIconsType = Record<string, LucideIconComponent>;
@@ -207,7 +210,6 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
       setSelectedFeatures([{ key, value }]);
       setOpenFeaturesModal(true);
     };
-
     return (
       <>
         {action === 'view' ? (
@@ -245,20 +247,19 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
             })}
           </div>
         ) : action === 'add' || action === 'edit' ? (
-          <DynamicForm
-            data={content}
-            onSave={handleSaveEdit}
-            onCancel={() => setOpenEditModal(false)}
-            disabledFields={disabledFields}
-          />
+          // <DynamicForm
+          // data={content}
+          // onSave={handleSaveEdit}
+          // onCancel={() => setOpenEditModal(false)}
+          // disabledFields={disabledFields}
+          // />
+          <>{content}</>
         ) : (
           <>Otro</>
         )}
       </>
     );
   };
-
-
 
   const renderFeatureContent = (features: FlexibleObject[] | null) => {
     if (!features) return null;
@@ -350,7 +351,12 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
             onChange={(e) => setFilterValue(e.target.value)}
           />
           <Button variant="contained" color="primary" onClick={handleFilter}>
+            <Search />
             Filtrar
+          </Button>
+          <Button variant="outlined" color="secondary" onClick={handleResetFilter}>
+            <FilterX />
+            Restablecer Filtro
           </Button>
         </div>
       </div>
@@ -391,11 +397,7 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
                       <Info />
                     </Button>
                   )}
-                  {item.plan && (
-                    <Button onClick={() => handleShowPlans(item.plan)}>
-                      <Info />
-                    </Button>
-                  )}
+
                 </TableCell>
               </TableRow>
             ))}
@@ -421,10 +423,11 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
         onSave={() => handleSaveEdit}
         onDelete={() => handleConfirmDelete}
         title={`Agregar ${sectionTitle}`}
-        content={data ? renderContent(data, 'add') : "No hay datos para mostrar."}
+        content={data}
         showButtons={true}
         mode="add"
       />
+
       <Modal
         isOpen={openEditModal}
         onAdd={() => handleAdd}
@@ -432,7 +435,7 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
         onSave={() => handleSaveEdit}
         onDelete={() => handleConfirmDelete}
         title={`Editar ${sectionTitle}`}
-        content={data ? renderContent(data, 'edit', ['id']) : "No hay datos para mostrar."}
+        content={data}
         showButtons={true}
         mode="edit"
       />
@@ -475,6 +478,7 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
         showButtons={true}
         mode="view"
       />
+
       <Modal
         isOpen={openPlanModal}
         onClose={() => setOpenPlanModal(false)}
