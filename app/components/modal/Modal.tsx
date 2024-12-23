@@ -6,7 +6,7 @@ import DynamicForm from '../form/DynamicForm';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: () => void;
+  onAdd: (data: any) => void;
   onSave: (data: any) => void; // Cambia la firma para recibir datos
   onDelete: () => void;
   title: string;
@@ -17,16 +17,27 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onAdd, onClose, onSave, onDelete, title, content, showButtons = false, mode }) => {
   const [formData, setFormData] = useState<any>(content); // Estado para almacenar los datos del formulario
+  const [originalData, setOriginalData] = useState<any>(content); // Estado para los datos originales
 
   useEffect(() => {
-    setFormData(content); // Actualiza el estado del formulario cuando el contenido cambia
+    setOriginalData(content); // Actualiza los datos originales al abrir el modal
+    setFormData(content); // Sincroniza los datos del formulario
   }, [content]);
 
   if (!isOpen) return null;
 
+
   const handleSave = () => {
-    console.log(formData); // Aquí se imprimen los datos del formulario
-    onSave(formData); // Llama a onSave con los datos del formulario
+    if (mode === 'add') {
+      onAdd(formData)
+    } else {
+      onSave(formData)
+    };
+    onClose(); // Cierra el modal
+  };
+
+  const handleCancel = () => {
+    setFormData(originalData); // Restaura los datos originales
     onClose(); // Cierra el modal
   };
 
@@ -36,7 +47,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onAdd, onClose, onSave, onDelete,
         <div className="flex justify-between items-center p-6 border-b">
           <h3 className="font-semibold text-xl">{title}</h3>
           <button
-            onClick={onClose}
+            onClick={handleCancel}
             className="text-gray-400 hover:text-gray-600"
             aria-label="Close"
           >
@@ -62,6 +73,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onAdd, onClose, onSave, onDelete,
                 <Save /> Save
               </Button>
             )}
+            <Button onClick={handleCancel} color="inherit" className="flex items-center gap-2">
+              Cancel
+            </Button>
             {mode === 'delete' && (
               <Button onClick={onDelete} color="error" className='flex items-center gap-2'>
                 <Trash2 /> Delete

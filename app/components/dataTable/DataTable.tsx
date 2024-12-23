@@ -1,6 +1,6 @@
 // components/DataTable.tsx
 'use client';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { ToggleRight, ToggleLeft, Eye, Edit, Trash2, Plus, Info, Search, FilterX } from 'lucide-react';
 import Modal from "../modal/Modal";
-import DynamicForm from "../form/DynamicForm";
 import * as LucideIcons from 'lucide-react';
 import Swal from 'sweetalert2'
 
@@ -49,6 +48,17 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
   const [selectedPlan, setSelectedPlans] = useState<FlexibleObject[] | null>(null);
   const [filterValue, setFilterValue] = useState<string>(''); // Valor a filtrar
   const [filteredData, setFilteredData] = useState(initialData); // Datos filtrados
+  const [modalMode, setModalMode] = useState<'add' | 'edit' | 'delete' | 'view'>('add');
+
+  if (!Array.isArray(initialData)) {
+    console.error("initialData debe ser un array.");
+    return null;
+  }
+
+
+  useEffect(() => {
+    setFilteredData(initialData);
+  }, [initialData]);
 
   const handleShowFeatures = (features: FlexibleObject[] | FlexibleObject) => {
     const featureArray = Array.isArray(features) ? features : [features];
@@ -68,7 +78,7 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
     const keys = Object.keys(firstItem);
 
     return keys.filter(key => !excludedHeaders.includes(key));
-  }, [initialData]);
+  }, [initialData, excludedHeaders]);
 
   const [selectedColumn, setSelectedColumn] = useState<string>(headers[0] || ''); // Columna seleccionada
 
@@ -161,9 +171,102 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
     setOpenAddModal(true);
   };
 
+  const handleSaveAdd = async (newData: any) => {
+    // Muestra el spinner de carga
+    Swal.fire({
+      title: 'Cargando...',
+      html: 'Por favor, espera mientras se agrega el nuevo registro.',
+      allowOutsideClick: false,
+    });
+    Swal.showLoading();
+  
+    try {
+      // Asegúrate de que active sea un booleano y ordering sea un número
+      const formattedData = {
+        ...newData,
+        active: Boolean(newData.active), // Convierte a booleano
+        ordering: Number(newData.ordering), // Convierte a número
+      };
+  
+      // Realiza la llamada a la API para agregar el nuevo registro
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${endpoint}`, {
+        method: 'POST', // Asegúrate de que este sea el método correcto
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formattedData), // Envía los datos del nuevo registro
+      });
+  
+      if (!res.ok) {
+        // Si la respuesta no es ok, lanza un error
+        const errorData = await res.json();
+        throw new Error(JSON.stringify(errorData.error) || 'Error desconocido');
+      }
+  
+      const addedRecord = await res.json(); // Obtén los datos del nuevo registro
+  
+      // Actualiza el estado de los datos filtrados
+      setFilteredData((prevData) => {
+        if (!Array.isArray(prevData)) {
+          console.error("prevData no es un array");
+          return [addedRecord]; // Retorna un nuevo array con el nuevo registro
+        }
+        return [...prevData, addedRecord]; // Agrega el nuevo registro a los datos filtrados
+      });
+  
+      // Actualiza el estado de currentData
+      setCurrentData((prevData:any) => {
+        if (!Array.isArray(prevData)) {
+          console.error("prevData no es un array");
+          return [addedRecord]; // Retorna un nuevo array con el nuevo registro
+        }
+        return [...prevData, addedRecord]; // Agrega el nuevo registro a currentData
+      });
+  
+      // Cierra el modal de agregar
+      setOpenAddModal(false);
+  
+      // Cierra el spinner de carga
+      Swal.close();
+  
+      // Muestra un mensaje de éxito
+      Swal.fire({
+        title: 'Éxito!',
+        text: 'El nuevo registro se ha agregado correctamente.',
+        icon: 'success',
+      });
+    } catch (error: any) {
+      console.error(error);
+  
+      // Cierra el spinner de carga
+      Swal.close();
+  
+      // Construye un mensaje de error si hay un array de errores
+      let errorMessage = 'Hubo un error al agregar el nuevo registro.';
+      if (error.message) {
+        try {
+          const errorArray = JSON.parse(error.message);
+          if (Array.isArray(errorArray)) {
+            // Muestra cada mensaje de error en una nueva línea
+            errorMessage = errorArray.map(err => `${err.message} (Path: ${err.path.join(' -> ')})`).join('\n');
+          }
+        } catch (e) {
+          // Si no se puede parsear, manten el mensaje original
+        }
+      }
+  
+      // Muestra un mensaje de error
+      Swal.fire({
+        title: 'Error!',
+        text: errorMessage,
+   icon: 'error',
+      });
+    }
+  };;
 
   const handleEdit = (userData: any) => {
     setCurrentData(userData); // Establece los datos del usuario en el estado
+    setModalMode('edit'); // Establece el modo de edición
     setOpenEditModal(true);
   };
 
@@ -177,11 +280,66 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
     setOpenViewModal(true);
   };
 
-  const handleSaveEdit = (editedData: any) => {
-    // const updatedData = initialData.map((item: any) => (item.id === editedData.id ? editedData : item));
-    // setCurrentData(updatedData);
-    // setOpenEditModal(false);
-    console.log('Saved Data:', editedData); // Log the saved data
+  const handleSaveEdit = async (editedData: any) => {
+    // Muestra el spinner de carga
+    Swal.fire({
+      title: 'Cargando...',
+      html: 'Por favor, espera mientras se actualizan los datos.',
+      allowOutsideClick: false,
+    });
+    Swal.showLoading();
+
+    try {
+      // Realiza la llamada a la API para actualizar los datos
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${endpoint}`, {
+        method: 'PUT', // Asegúrate de que este sea el método correcto
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editedData), // Envía los datos editados
+      });
+
+      if (!res.ok) {
+        // Si la respuesta no es ok, lanza un error
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Error desconocido');
+      }
+
+      const updatedUser = await res.json(); // Obtén los datos actualizados
+
+      // Actualiza el estado de los datos filtrados
+      const updatedData = filteredData.map((item) =>
+        item.id === updatedUser.id ? updatedUser : item
+      );
+
+      setFilteredData(updatedData); // Actualiza los datos filtrados
+      setCurrentData(updatedData); // Sincroniza el estado principal
+
+      // Cierra el modal de edición
+      setOpenEditModal(false);
+
+      // Cierra el spinner de carga
+      Swal.close();
+
+      // Muestra un mensaje de éxito
+      Swal.fire({
+        title: 'Éxito!',
+        text: 'Los datos del usuario se han actualizado correctamente.',
+        icon: 'success',
+      });
+    } catch (error: any) {
+      console.error(error);
+
+      // Cierra el spinner de carga
+      Swal.close();
+
+      // Muestra un mensaje de error
+      Swal.fire({
+        title: 'Error!',
+        text: error.message || 'Hubo un error al actualizar los datos del usuario.',
+        icon: 'error',
+      });
+    }
   };
 
   const handleConfirmDelete = (userData: any) => {
@@ -246,14 +404,6 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
               );
             })}
           </div>
-        ) : action === 'add' || action === 'edit' ? (
-          // <DynamicForm
-          // data={content}
-          // onSave={handleSaveEdit}
-          // onCancel={() => setOpenEditModal(false)}
-          // disabledFields={disabledFields}
-          // />
-          <>{content}</>
         ) : (
           <>Otro</>
         )}
@@ -419,7 +569,7 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
       <Modal
         isOpen={openAddModal}
         onClose={() => setOpenAddModal(false)}
-        onAdd={() => handleAdd}
+        onAdd={handleSaveAdd}
         onSave={() => handleSaveEdit}
         onDelete={() => handleConfirmDelete}
         title={`Agregar ${sectionTitle}`}
@@ -430,21 +580,21 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
 
       <Modal
         isOpen={openEditModal}
-        onAdd={() => handleAdd}
+        onAdd={handleAdd}
         onClose={() => setOpenEditModal(false)}
-        onSave={() => handleSaveEdit}
+        onSave={handleSaveEdit}
         onDelete={() => handleConfirmDelete}
         title={`Editar ${sectionTitle}`}
         content={data}
         showButtons={true}
-        mode="edit"
+        mode={modalMode}
       />
 
       <Modal
         isOpen={openViewModal}
         onAdd={() => handleAdd}
         onClose={() => setOpenViewModal(false)}
-        onSave={() => handleSaveEdit(data)} // Asegúrate de pasar los datos correctos
+        onSave={() => handleSaveEdit} // Asegúrate de pasar los datos correctos
         onDelete={() => handleConfirmDelete(data)} // Asegúrate de pasar los datos correctos
         title={`Ver ${sectionTitle}`}
         content={data ? renderContent(data, 'view') : "No hay datos para mostrar."} // Manejo de datos nulos
