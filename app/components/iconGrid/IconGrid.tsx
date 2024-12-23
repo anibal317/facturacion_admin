@@ -34,24 +34,49 @@ const IconGrid: React.FC = () => {
   const totalPages = Math.ceil(filteredIcons.length / iconsPerPage);
   const paginatedIcons = filteredIcons.slice(currentPage * iconsPerPage, (currentPage + 1) * iconsPerPage);
 
-  // Función para copiar al portapapeles y mostrar un toast
+  // Función para copiar al portapapeles y mostrar un toast con barra de progreso
   const copyToClipboard = (iconName: string) => {
     navigator.clipboard.writeText(iconName).then(() => {
-      toast.success(`Copiado: ${iconName}`, {
+      const toastId = toast.success(`Copiado: ${iconName}`, {
         position: "top-right",
-        autoClose: 3000, // Cierra automáticamente después de 3 segundos
-        hideProgressBar: true,
+        autoClose: false, // No cerrar automáticamente
+        hideProgressBar: false, // Mostrar la barra de progreso
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: 0, // Inicializar el progreso
       });
+
+      // Duración total del toast en milisegundos
+      const duration = 3000; // 5 segundos
+      let startTime = Date.now();
+
+      const updateProgress = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1); // Calcular el progreso
+
+        toast.update(toastId, {
+          progress: progress, // Actualizar el progreso
+        });
+
+        if (progress < 1) {
+          requestAnimationFrame(updateProgress); // Continuar actualizando el progreso
+        } else {
+          toast.update(toastId, {
+            render: 'Copiado: ' + iconName,
+            autoClose: 3000, // Cerrar automáticamente después de 3 segundos
+            progress: 1, // Completar el progreso
+          });
+        }
+      };
+
+      requestAnimationFrame(updateProgress); // Iniciar la actualización del progreso
     }).catch(err => {
       console.error('Error al copiar al portapapeles: ', err);
       toast.error('Error al copiar al portapapeles', {
         position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
+        autoClose: 1000,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
@@ -69,7 +94,7 @@ const IconGrid: React.FC = () => {
       <input
         type="text"
         placeholder="Buscar íconos..."
-        value={searchTerm}
+        value={searchTerm }
         onChange={(e) => setSearchTerm(e.target.value)}
         className="border-gray-300 mb-4 p-2 border rounded-md w-full"
       />
@@ -89,7 +114,7 @@ const IconGrid: React.FC = () => {
             setFilterLetter(''); // Restablecer el filtro de letra
             setSearchTerm(''); // Restablecer el término de búsqueda
           }}
-          className="bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded-md -gray-700 text"
+          className="bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded-md text-gray-700"
         >
           Mostrar todos
         </button>

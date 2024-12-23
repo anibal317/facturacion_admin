@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Home, Trophy, Settings, LogOut, ChevronLeft, ChevronRight, FileIcon as FileUser , CircleHelpIcon, LayoutList, LucideLink, ChevronDown, ChevronUp } from 'lucide-react';
+import { Home, Trophy, Settings, LogOut, ChevronLeft, ChevronRight, FileIcon as FileUser, CircleHelpIcon, LayoutList, LucideLink, ChevronDown, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -21,20 +21,30 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggleSidebar }) => {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const pathname = usePathname();
-  
+
   const menuItems: MenuItem[] = [
     { id: 'home', icon: Home, label: 'Inicio', path: '/dashboard', subItems: [] },
-    { id: 'benefits', icon: Settings, label: 'Beneficios', path: '/dashboard/benefits', subItems: [] },
-    { id: 'plans', icon: Trophy, label: 'Planes', path: '', subItems: [
-      { id: 'list-plans', icon: LayoutList, label: 'Tipos de Planes', path: '/dashboard/plans' },
-      { id: 'list-plans-items', icon: Trophy, label: 'Funcionalidades', path: '/dashboard/plans/items' },
-    ] },
-    { id: 'clients', icon: FileUser , label: 'Clientes', path: '/dashboard/clients', subItems: [] },
+    {
+      id: 'benefits', icon: Settings, label: 'Beneficios', path: '', subItems: [
+        { id: 'benefits-icons', icon: Home, label: 'Lista de iconos', path: '/dashboard/benefits', subItems: [] },
+        { id: 'benefits-icons', icon: Home, label: 'Lista de iconos', path: '/dashboard/icons', subItems: [] },
+
+      ]
+    },
+    {
+      id: 'plans', icon: Trophy, label: 'Planes', path: '', subItems: [
+        { id: 'list-plans', icon: LayoutList, label: 'Tipos de Planes', path: '/dashboard/plans' },
+        { id: 'list-plans-items', icon: Trophy, label: 'Funcionalidades', path: '/dashboard/plans/items' },
+      ]
+    },
+    { id: 'clients', icon: FileUser, label: 'Clientes', path: '/dashboard/clients', subItems: [] },
     { id: 'faqs', icon: CircleHelpIcon, label: 'FAQs', path: '/dashboard/faqs', subItems: [] },
-    { id: 'features', icon: LayoutList, label: 'Funcionalidades', path: '', subItems: [
-      { id: 'list-features', icon: LayoutList, label: 'Funcionalidades', path: '/dashboard/features' },
-      { id: 'list-plan-items', icon: Trophy, label: 'Características', path: '/dashboard/features/items' },
-    ] },
+    {
+      id: 'features', icon: LayoutList, label: 'Funcionalidades', path: '', subItems: [
+        { id: 'list-features', icon: LayoutList, label: 'Funcionalidades', path: '/dashboard/features' },
+        { id: 'list-plan-items', icon: Trophy, label: 'Características', path: '/dashboard/features/items' },
+      ]
+    },
     {
       id: 'links', icon: LucideLink, label: 'Links', path: '',
       subItems: [
@@ -86,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
               onClick={() => {
                 if (item.subItems && item.subItems.length > 0) {
                   toggleExpand(item.id);
- } else {
+                } else {
                   setIsOpen(false); // Cierra el sidebar si no tiene subelementos
                 }
               }}
