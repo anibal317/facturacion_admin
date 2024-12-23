@@ -4,6 +4,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import * as LucideIcons from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const IconGrid: React.FC = () => {
   // Obtener las claves de los íconos (solo los nombres) y filtrar los que terminan en "Icon"
@@ -32,17 +34,35 @@ const IconGrid: React.FC = () => {
   const totalPages = Math.ceil(filteredIcons.length / iconsPerPage);
   const paginatedIcons = filteredIcons.slice(currentPage * iconsPerPage, (currentPage + 1) * iconsPerPage);
 
-  // Función para copiar al portapapeles
+  // Función para copiar al portapapeles y mostrar un toast
   const copyToClipboard = (iconName: string) => {
     navigator.clipboard.writeText(iconName).then(() => {
-      alert(`Copiado: ${iconName}`);
+      toast.success(`Copiado: ${iconName}`, {
+        position: "top-right",
+        autoClose: 3000, // Cierra automáticamente después de 3 segundos
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }).catch(err => {
       console.error('Error al copiar al portapapeles: ', err);
+      toast.error('Error al copiar al portapapeles', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     });
   };
 
   return (
     <div className="p-4">
+      <ToastContainer />
       <h1 className="mb-4 font-bold text-2xl">Iconos</h1>
       <p className="mb-4">Total de iconos: {filteredIcons.length}</p>
       
@@ -69,7 +89,7 @@ const IconGrid: React.FC = () => {
             setFilterLetter(''); // Restablecer el filtro de letra
             setSearchTerm(''); // Restablecer el término de búsqueda
           }}
-          className="bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded-md text-gray-700"
+          className="bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded-md -gray-700 text"
         >
           Mostrar todos
         </button>
@@ -94,7 +114,7 @@ const IconGrid: React.FC = () => {
 
       <div className="flex justify-between items-center mt-4">
         <button
- onClick={() => setCurrentPage(prev => Math.max(prev - 1, 0))}
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 0))}
           disabled={currentPage === 0}
           className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white"
         >
