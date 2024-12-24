@@ -3,13 +3,26 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod'; // Asegúrate de tener Zod instalado
 
 const prisma = new PrismaClient();
+
 const featrueItemSchema = z.object({
   text: z.string().nonempty('Value is required'),
-  parentId: z.number().int(),
-  featureId: z.number().int(),
+  parentId: z.number().int().optional(), // Opcional
+  featureId: z.number().int().optional(), // Opcional
+  feature: z.object({
+    connect: z.object({
+      id: z.number().int(),
+    }),
+  }).optional(),
+  item: z.object({
+    connect: z.object({
+      id: z.number().int(),
+    }),
+  }).optional(),
+  other_item: z.array(z.number()).optional(),
   active: z.boolean().optional(),
   ordering: z.number().int().min(1).optional(),
-})
+});
+
 export async function GET() {
   try {
     // Obtiene las características con sus items
@@ -29,25 +42,43 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const parseBody = featrueItemSchema.parse(body)
-    const newFeature = await prisma.feature.create({
-      data: {
-        text: parseBody.text,
-        parentId: parseBody.parentId,
-        featureId: parseBody.featureId,
-        active: parseBody.active,
-        ordering: parseBody.ordering,
-      },
+    const parseBody = featrueItemSchema.parse(body);
+
+    const data: any = {
+      text: parseBody.text,
+      ...(parseBody.parentId !== undefined && { parentId: parseBody.parentId }),
+      ...(parseBody.featureId !== undefined && { featureId: parseBody.featureId }),
+      ...(parseBody.active !== undefined && { active: parseBody.active }),
+      ...(parseBody.ordering !== undefined && { ordering: parseBody.ordering }),
+    };
+
+    if (parseBody.item) {
+      data.item = {
+        connect: { id: parseBody.item.connect.id },
+      };
+    }
+
+    if (parseBody.other_item) {
+      data.other_item = {
+        connect: parseBody.other_item.map(id => ({ id })),
+      };
+    }
+
+    const newFeature = await prisma.item.create({
+      data,
     });
+
     return NextResponse.json(newFeature, {
       status: 201,
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Error creating link' }, {
+    console.error('Error creating item:', error);
+    return NextResponse.json({ error: 'Error creating item' }, {
       status: 500,
     });
   }
 }
+
 
 // PUT: Update an existing link by ID
 export async function PUT(req: Request) {
@@ -61,7 +92,7 @@ export async function PUT(req: Request) {
       });
     }
 
-    const updatedFeature = await prisma.feature.update({
+    const updatedFeature = await prisma.item.update({
       where: { id },
       data,
     });
@@ -88,7 +119,7 @@ export async function DELETE(req: Request) {
       });
     }
 
-    const deactivatedFeature = await prisma.feature.update({
+    const deactivatedFeature = await prisma.item.update({
       where: { id: parseInt(id, 10) },
       data: { active: false },
     });
@@ -115,7 +146,7 @@ export async function PATCH(req: Request) {
       });
     }
 
-    const activatedFeature = await prisma.feature.update({
+    const activatedFeature = await prisma.item.update({
       where: { id: parseInt(id, 10) },
       data: { active: true },
     });
