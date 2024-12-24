@@ -7,7 +7,7 @@ const benefitsSchema = z.object({
   icon: z.string().nonempty('Value is required'),
   title: z.string().nonempty('Value is required'),
   description: z.string().nonempty('Value is required'),
-  color: z.string().nonempty('Value is required'),
+  color: z.string().optional(),
   isStrikethrough: z.boolean().optional(),
   section: z.enum(['FEATURE', 'HOME'], {
     required_error: 'Value is required: Allowed values: FEATURE or HOME',
@@ -88,9 +88,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(req: Request) {
+  console.log("Benefits POST Method");
+  
   try {
     const body = await req.json();
     const parseBody = benefitsSchema.parse(body)
+    console.log(JSON.stringify(body))
 
     const newBenefits = await prisma.benefit.create({
       data: {
@@ -104,11 +107,11 @@ export async function POST(req: Request) {
         ordering: parseBody.ordering ?? 1,
       },
     });
-    return NextResponse.json(newBenefits, {
+    return NextResponse.json({newBenefits}, {
       status: 201,
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Error creating link', errroDetaeil: error }, {
+    return NextResponse.json({ error: 'Error creating link', errroDetailed: error }, {
       status: 500,
     });
   }
