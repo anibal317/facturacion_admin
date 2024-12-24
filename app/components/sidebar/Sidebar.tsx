@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
     { id: 'home', icon: Home, label: 'Inicio', path: '/dashboard', subItems: [] },
     {
       id: 'benefits', icon: Settings, label: 'Beneficios', path: '', subItems: [
-        { id: 'benefits-icons', icon: Home, label: 'Lista de iconos', path: '/dashboard/benefits', subItems: [] },
+        { id: 'list-benefits', icon: Home, label: 'Lista de iconos', path: '/dashboard/benefits', subItems: [] },
         { id: 'benefits-icons', icon: Home, label: 'Lista de iconos', path: '/dashboard/icons', subItems: [] },
 
       ]

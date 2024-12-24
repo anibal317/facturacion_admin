@@ -48,7 +48,7 @@ const IconGrid: React.FC = () => {
       });
 
       // Duración total del toast en milisegundos
-      const duration = 3000; // 5 segundos
+      const duration = 5000; // 5 segundos
       let startTime = Date.now();
 
       const updateProgress = () => {
