@@ -9,7 +9,7 @@ const benefitsSchema = z.object({
   description: z.string().nonempty('Value is required'),
   color: z.string().nonempty('Value is required'),
   isStrikethrough: z.boolean().optional(),
-  section: z.enum(['FEATURE','HOME'], {
+  section: z.enum(['FEATURE', 'HOME'], {
     required_error: 'Value is required: Allowed values: FEATURE or HOME',
     invalid_type_error: 'Invalid value for section',
   }),
@@ -97,8 +97,8 @@ export async function POST(req: Request) {
         icon: parseBody.icon,
         title: parseBody.title,
         description: parseBody.description,
-        color: parseBody.color,
-        isStrikethrough: parseBody.isStrikethrough,
+        color: parseBody.color ?? 'text-blue-600',
+        isStrikethrough: parseBody.isStrikethrough ?? false,
         section: parseBody.section,
         active: parseBody.active ?? true,
         ordering: parseBody.ordering ?? 1,
