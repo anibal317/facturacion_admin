@@ -1,6 +1,15 @@
 import { PrismaClient } from '@prisma/client';
+import { z } from 'zod'; // Asegúrate de tener Zod instalado
 import { NextResponse } from 'next/server';
 
+
+const clientSchema = z.object({
+  name: z.string().nonempty('Value is required'),
+  img: z.string().nonempty('Value is required'),
+  link: z.string().nonempty('Value is required'),
+  active: z.boolean().optional(),
+  ordering: z.number().int().min(1).optional(),
+})
 const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
@@ -56,8 +65,15 @@ export async function GET(request: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const parseBody = clientSchema.parse(body)
     const newClient = await prisma.client.create({
-      data: body,
+      data: {
+        name: parseBody.name,
+        img: parseBody.img,
+        link: parseBody.link,
+        active: parseBody.active,
+        ordering: parseBody.ordering,
+      },
     });
     return NextResponse.json(newClient, {
       status: 201,

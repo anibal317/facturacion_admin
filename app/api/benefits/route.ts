@@ -1,5 +1,21 @@
+import { ZodNonEmptyArray } from './../../../node_modules/zod/lib/types.d';
 import { BenefitSection, PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { z } from 'zod'; // Asegúrate de tener Zod instalado
+
+const benefitsSchema = z.object({
+  icon: z.string().nonempty('Value is required'),
+  title: z.string().nonempty('Value is required'),
+  description: z.string().nonempty('Value is required'),
+  color: z.string().nonempty('Value is required'),
+  isStrikethrough: z.boolean().optional(),
+  section: z.enum(['FEATURE','HOME'], {
+    required_error: 'Value is required: Allowed values: FEATURE or HOME',
+    invalid_type_error: 'Invalid value for section',
+  }),
+  active: z.boolean().optional(),
+  ordering: z.number().int().min(1).optional(),
+})
 
 const prisma = new PrismaClient();
 interface WhereClause {
@@ -74,14 +90,25 @@ export async function GET(request: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const parseBody = benefitsSchema.parse(body)
+
     const newBenefits = await prisma.benefit.create({
-      data: body,
+      data: {
+        icon: parseBody.icon,
+        title: parseBody.title,
+        description: parseBody.description,
+        color: parseBody.color,
+        isStrikethrough: parseBody.isStrikethrough,
+        section: parseBody.section,
+        active: parseBody.active ?? true,
+        ordering: parseBody.ordering ?? 1,
+      },
     });
     return NextResponse.json(newBenefits, {
       status: 201,
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Error creating link' }, {
+    return NextResponse.json({ error: 'Error creating link', errroDetaeil: error }, {
       status: 500,
     });
   }

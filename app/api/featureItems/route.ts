@@ -1,8 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { z } from 'zod'; // Asegúrate de tener Zod instalado
 
 const prisma = new PrismaClient();
-
+const featrueItemSchema = z.object({
+  text: z.string().nonempty('Value is required'),
+  parentId: z.number().int(),
+  featureId: z.number().int(),
+  active: z.boolean().optional(),
+  ordering: z.number().int().min(1).optional(),
+})
 export async function GET() {
   try {
     // Obtiene las características con sus items
@@ -22,8 +29,15 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const parseBody = featrueItemSchema.parse(body)
     const newFeature = await prisma.feature.create({
-      data: body,
+      data: {
+        text: parseBody.text,
+        parentId: parseBody.parentId,
+        featureId: parseBody.featureId,
+        active: parseBody.active,
+        ordering: parseBody.ordering,
+      },
     });
     return NextResponse.json(newFeature, {
       status: 201,
