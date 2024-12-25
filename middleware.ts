@@ -32,7 +32,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Define public paths that don't require authentication
-  const publicPaths = ['/api/login', '/api/register', '/login', '/register'];
+  const publicPaths = ['/api/login', '/api/register', '/login', '/register', '/'];
   const isPublicPath = publicPaths.some(path => req.nextUrl.pathname.startsWith(path));
 
   // Check for JWT token
