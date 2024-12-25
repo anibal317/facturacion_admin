@@ -88,12 +88,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(req: Request) {
-  console.log("Benefits POST Method");
-  
   try {
     const body = await req.json();
     const parseBody = benefitsSchema.parse(body)
-    console.log(JSON.stringify(body))
 
     const newBenefits = await prisma.benefit.create({
       data: {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Home, Trophy, Settings, LogOut, ChevronLeft, ChevronRight, FileIcon as FileUser, CircleHelpIcon, LayoutList, LucideLink, ChevronDown, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface MenuItem {
   id: string;
@@ -21,6 +21,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggleSidebar }) => {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const pathname = usePathname();
+  const router = useRouter(); // Hook para redirigir
 
   const menuItems: MenuItem[] = [
     { id: 'home', icon: Home, label: 'Inicio', path: '/dashboard', subItems: [] },
@@ -80,9 +81,25 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
     setExpandedItems([]);
   };
 
+
+
   const isActive = (item: MenuItem) => {
     return pathname === item.path || item.subItems?.some(subItem => pathname === subItem.path);
   };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`, { method: 'DELETE' });
+      if (response.ok) {
+        router.push('/'); // Redirige al home después del logout
+      } else {
+        console.error('Error al cerrar sesión');
+      }
+    } catch (error) {
+      console.error('Error durante el logout:', error);
+    }
+  };
+
 
   const renderMenuItem = (item: MenuItem) => {
     const active = isActive(item);
@@ -185,6 +202,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
           </button>
         )}
         <button
+          onClick={handleLogout} // Vincula la función al botón
           className="flex justify-center items-center bg-red-700 hover:bg-red-800 mt-2 p-3 w-full transition-colors"
           title="Cerrar Sesión"
         >

@@ -7,6 +7,8 @@ CREATE TABLE `benefit` (
     `color` VARCHAR(191) NOT NULL,
     `isStrikethrough` BOOLEAN NOT NULL DEFAULT false,
     `section` ENUM('HOME', 'FEATURE') NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -22,6 +24,8 @@ CREATE TABLE `plan` (
     `discountedPrice` DOUBLE NULL,
     `freeMonths` INTEGER NULL,
     `purchasePoints` VARCHAR(191) NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     UNIQUE INDEX `Plan_planId_key`(`planId`),
     PRIMARY KEY (`id`)
@@ -35,6 +39,8 @@ CREATE TABLE `planfeature` (
     `hasInfo` BOOLEAN NOT NULL DEFAULT false,
     `isPremium` BOOLEAN NOT NULL DEFAULT false,
     `planId` VARCHAR(191) NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     INDEX `PlanFeature_planId_fkey`(`planId`),
     PRIMARY KEY (`id`)
@@ -47,6 +53,8 @@ CREATE TABLE `feature` (
     `description` VARCHAR(191) NULL,
     `video` BOOLEAN NOT NULL DEFAULT false,
     `videoLink` VARCHAR(191) NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     UNIQUE INDEX `Feature_title_key`(`title`),
     PRIMARY KEY (`id`)
@@ -58,6 +66,8 @@ CREATE TABLE `item` (
     `text` VARCHAR(191) NOT NULL,
     `parentId` INTEGER NULL,
     `featureId` INTEGER NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     INDEX `Item_featureId_idx`(`featureId`),
     INDEX `Item_parentId_idx`(`parentId`),
@@ -70,6 +80,8 @@ CREATE TABLE `faq` (
     `value` VARCHAR(191) NOT NULL,
     `question` VARCHAR(191) NOT NULL,
     `answer` VARCHAR(600) NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -82,6 +94,8 @@ CREATE TABLE `link` (
     `enabled` BOOLEAN NOT NULL DEFAULT true,
     `type` VARCHAR(191) NOT NULL,
     `navigationId` INTEGER NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     INDEX `Link_navigationId_fkey`(`navigationId`),
     PRIMARY KEY (`id`)
@@ -95,6 +109,8 @@ CREATE TABLE `navigation` (
     `logoText` VARCHAR(191) NOT NULL,
     `logoHref` VARCHAR(191) NOT NULL,
     `dropdownEnabled` BOOLEAN NOT NULL DEFAULT false,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -112,6 +128,8 @@ CREATE TABLE `config` (
     `youtubeLink` VARCHAR(191) NOT NULL,
     `copyrightText` VARCHAR(191) NOT NULL,
     `companyHours` VARCHAR(191) NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -121,6 +139,8 @@ CREATE TABLE `sectionTexts` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `section` VARCHAR(191) NOT NULL,
     `text` VARCHAR(191) NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -131,8 +151,22 @@ CREATE TABLE `client` (
     `name` VARCHAR(191) NOT NULL,
     `img` VARCHAR(191) NOT NULL,
     `link` VARCHAR(191) NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
+    `ordering` INTEGER NOT NULL DEFAULT 1,
 
     UNIQUE INDEX `client_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `User` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `active` BOOLEAN NOT NULL DEFAULT true,
+
+    UNIQUE INDEX `User_username_key`(`username`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

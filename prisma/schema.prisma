@@ -94,7 +94,7 @@ model link {
   navigation   navigation @relation(fields: [navigationId], references: [id], map: "Link_navigationId_fkey")
   active       Boolean    @default(true)
   ordering     Int        @default(1)
-
+  createdAt DateTime @default(now())
   @@index([navigationId], map: "Link_navigationId_fkey")
 }
 
@@ -151,4 +151,12 @@ enum BenefitSection {
 enum navigation_section {
   HOME
   FEATURE
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  username String   @unique
+  password String
+  createdAt DateTime @default(now())
+  active Boolean @default(true)
 }

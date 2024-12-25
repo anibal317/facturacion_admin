@@ -1,21 +1,53 @@
-// app/login/page.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Verificar si el usuario ya está autenticado
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/dashboard'); // Redirigir al dashboard si ya está logueado
+    }
+  }, [router]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // login(username, password);
-    if (username === 'admin' && password === 'admin') {
-      router.push('/dashboard');
-    } else {
-      alert('Credenciales incorrectas');
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const { token } = await response.json();
+        localStorage.setItem('token', token); // Guardar el token en localStorage
+        router.push('/dashboard'); // Redirigir al dashboard
+      } else {
+        const { message } = await response.json();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: message, // Mostrar mensaje de error
+        });
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al procesar la solicitud. Inténtalo de nuevo.',
+      });
     }
   };
 
