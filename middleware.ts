@@ -9,7 +9,8 @@ const allowedOrigins = [
   'https://facturacion-admin.onrender.com',
   'https://facturacion-admin.vercel.app/api',
   'https://facturacion-admin.vercel.app',
-  '*'
+  '*',
+  'https://bolivarsoftware.com'
 ];
 
 // Helper function to check if origin is allowed
