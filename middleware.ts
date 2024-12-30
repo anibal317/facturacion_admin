@@ -7,7 +7,9 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
   'https://facturacion-admin.onrender.com',
-  'https://facturacion-admin.vercel.app/'
+  'https://facturacion-admin.vercel.app/api',
+  'https://facturacion-admin.vercel.app',
+  '*'
 ];
 
 // Helper function to check if origin is allowed
