@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
     { id: 'home', icon: Home, label: 'Inicio', path: '/dashboard', subItems: [] },
     {
       id: 'benefits', icon: Settings, label: 'Beneficios', path: '', subItems: [
-        { id: 'list-benefits', icon: Home, label: 'Lista de iconos', path: '/dashboard/benefits', subItems: [] },
+        { id: 'list-benefits', icon: Home, label: 'Lista de Beneficios', path: '/dashboard/benefits', subItems: [] },
         { id: 'benefits-icons', icon: Home, label: 'Lista de iconos', path: '/dashboard/icons', subItems: [] },
 
       ]
@@ -89,14 +89,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`, { method: 'DELETE' });
-      if (response.ok) {
-        router.push('/'); // Redirige al home después del logout
-      } else {
-        console.error('Error al cerrar sesión');
-      }
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`, { method: 'DELETE', credentials: 'include' });
+      // Limpia cualquier estado de usuario aquí
+      localStorage.removeItem('token'); // Si usas token en localStorage
+      // Si usas context, llama a tu función de logout del context aquí
+      router.replace('/login'); // Usa replace para evitar volver atrás
     } catch (error) {
       console.error('Error durante el logout:', error);
+      router.replace('/login'); // Redirige igual aunque falle
     }
   };
 

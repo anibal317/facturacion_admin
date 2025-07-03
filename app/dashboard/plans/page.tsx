@@ -37,8 +37,6 @@ export default function plans() {
             <Head>
                 <title>Planes</title>
             </Head>
-            <h1>Data Table with CRUD Operations</h1>
-
             <DataTable initialData={plans} sectionTitle="Planes" excludedHeaders={['planfeature']} endpoint="plans"/>
         </div>
     )

@@ -77,3 +77,18 @@ export interface Item {
     children: Item[];
 }
 
+export interface Config {
+    id: number;
+    contactWS: number;
+    contactPhone: string;
+    contactAddress: string;
+    contactEmail: string;
+    companyName: string;
+    instagramLink: string;
+    facebookLink: string;
+    youtubeLink: string;
+    copyrightText: string;
+    companyHours: string;
+    active: boolean;
+    ordering: number;
+}

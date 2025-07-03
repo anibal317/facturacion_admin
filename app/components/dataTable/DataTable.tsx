@@ -372,6 +372,16 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
       <>
         {action === 'view' ? (
           <div className="flex flex-col space-y-2">
+            {/* Mostrar imagen si es cliente y existe el campo img */}
+            {endpoint === 'clients' && content.img && (
+              <div className="flex justify-center mb-4">
+                <img
+                  src={`https://bolivarsoftware.com${content.img}`}
+                  alt={content.name || 'Imagen'}
+                  style={{ maxWidth: 120, maxHeight: 120, borderRadius: 12, boxShadow: "0 2px 8px #0002" }}
+                />
+              </div>
+            )}
             {Object.keys(content).map((key) => {
               const value = content[key];
 
@@ -596,7 +606,11 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
         onClose={() => setOpenViewModal(false)}
         onSave={() => handleSaveEdit} // Asegúrate de pasar los datos correctos
         onDelete={() => handleConfirmDelete(data)} // Asegúrate de pasar los datos correctos
-        title={`Ver ${sectionTitle}`}
+        title={
+          endpoint === 'clients' && data && data.name
+            ? `Ver ${sectionTitle}: ${data.name}`
+            : `Ver ${sectionTitle}`
+        }
         content={data ? renderContent(data, 'view') : "No hay datos para mostrar."} // Manejo de datos nulos
         showButtons={true} // Tal vez no necesites botones en el modo de vista
         mode="view"

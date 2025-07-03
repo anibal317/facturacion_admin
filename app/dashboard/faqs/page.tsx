@@ -38,7 +38,6 @@ export default function faqs() {
             <Head>
                 <title>Clientes</title>
             </Head>
-            <h1>Data Table with CRUD Operations</h1>
             <DataTable initialData={faqs} sectionTitle="Preguntas Frecuentes" endpoint="faqs" />
         </div>
     )

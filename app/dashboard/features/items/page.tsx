@@ -38,7 +38,6 @@ export default function items() {
             <Head>
                 <title>Beneficios</title>
             </Head>
-            <h1>Data Table with CRUD Operations</h1>
             <DataTable initialData={faqs} sectionTitle="Beneficios"  excludedHeaders={['items']} endpoint="featureItems"/>
         </div>
     )

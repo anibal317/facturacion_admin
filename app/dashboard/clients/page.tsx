@@ -39,7 +39,6 @@ export default function clients() {
             <Head>
                 <title>Clientes</title>
             </Head>
-            <h1>Data Table with CRUD Operations</h1>
             <DataTable initialData={clients} sectionTitle="Clientes" endpoint="clients"/>
         </div>
     )
