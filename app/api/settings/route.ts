@@ -15,6 +15,7 @@ const configSchema = z.object({
   youtubeLink: z.string(),
   copyrightText: z.string(),
   companyHours: z.string(),
+  urlSite: z.string().url().optional().default(''),
   active: z.boolean().optional(),
   ordering: z.number().optional(),
 });

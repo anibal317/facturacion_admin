@@ -84,6 +84,7 @@ export interface Config {
     contactAddress: string;
     contactEmail: string;
     companyName: string;
+    urlSite: string;
     instagramLink: string;
     facebookLink: string;
     youtubeLink: string;

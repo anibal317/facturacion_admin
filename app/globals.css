@@ -23,3 +23,7 @@ body {
   min-height: 100%;
   overflow-x: hidden;
 }
+#bsLink{
+  color: #2563eb; /* blue-600 */
+  text-decoration: none;
+}

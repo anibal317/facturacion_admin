@@ -27,6 +27,7 @@ import {
   Mail,
   MapPin,
   Building2,
+  Globe,
   Instagram,
   Facebook,
   Youtube,
@@ -53,7 +54,7 @@ export default function SettingsPage() {
     fetch("/api/settings")
       .then((res) => res.json())
       .then((data) => {
-        setConfig(data)
+        setConfig({ ...data, urlSite: data.urlSite || "" })
         setLoading(false)
       })
       .catch(() => {
@@ -240,6 +241,23 @@ export default function SettingsPage() {
                       startAdornment: (
                         <InputAdornment position="start">
                           <Copyright size={20} />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+
+                  {/* Nueva fila - URL del sitio */}
+                  <TextField
+                    fullWidth
+                    label="URL del sitio web"
+                    name="urlSite"
+                    value={config.urlSite || ""}
+                    onChange={handleChange}
+                    placeholder="https://tusitio.com"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Globe size={20} />
                         </InputAdornment>
                       ),
                     }}

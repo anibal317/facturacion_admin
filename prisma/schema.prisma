@@ -117,6 +117,7 @@ model config {
   contactAddress String
   contactEmail   String
   companyName    String
+  urlSite        String
   instagramLink  String
   facebookLink   String
   youtubeLink    String
