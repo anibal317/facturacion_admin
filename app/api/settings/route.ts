@@ -5,7 +5,7 @@ import { z } from 'zod';
 const prisma = new PrismaClient();
 
 const configSchema = z.object({
-  contactWS: z.number(),
+  contactWS: z.string(),
   contactPhone: z.string(),
   contactAddress: z.string(),
   contactEmail: z.string().email(),

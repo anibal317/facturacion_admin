@@ -79,7 +79,7 @@ export interface Item {
 
 export interface Config {
     id: number;
-    contactWS: number;
+    contactWS: string;
     contactPhone: string;
     contactAddress: string;
     contactEmail: string;

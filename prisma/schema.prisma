@@ -112,7 +112,7 @@ model navigation {
 
 model config {
   id             Int     @id @default(autoincrement())
-  contactWS      Int
+  contactWS      String
   contactPhone   String
   contactAddress String
   contactEmail   String
