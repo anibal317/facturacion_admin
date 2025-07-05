@@ -8,7 +8,7 @@ const allowedOrigins = [
   'http://localhost:3001',
   'https://facturacion-admin.onrender.com',
   'https://facturacion-admin.vercel.app/api',
-  'https://facturacion-admin.vercel.app',
+  'https://facturacion-admin.vercel.app/*',
   '*',
   'https://bolivarsoftware.com'
 ];
