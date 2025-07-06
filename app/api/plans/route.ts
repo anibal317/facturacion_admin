@@ -1,14 +1,27 @@
 // app/api/plans/route.ts
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { z } from 'zod';
 
 const prisma = new PrismaClient();
+const planSchema = z.object({
+  planId: z.string(),
+  isRecommneded: z.boolean().optional(),
+  title: z.string(),
+  subtitle: z.string(),
+  originalPrice: z.number(),
+  discountedPrice: z.number(),
+  freeMonths: z.number(),
+  purchasePoints: z.string(),
+  active: z.boolean().optional(),
+  ordering: z.number().optional(),
 
+})
 // Manejo de solicitudes GET
 export async function GET(req: Request) {
   try {
     const plans = await prisma.plan.findMany({
-      where:{active:true},
+      where: { active: true },
       include: {
         planfeature: true,
       },
@@ -51,6 +64,7 @@ export async function PUT(req: Request) {
         status: 400,
       });
     }
+    const parsed = planSchema.partial().parse(data);
 
     const updatedPlan = await prisma.plan.update({
       where: { id },
