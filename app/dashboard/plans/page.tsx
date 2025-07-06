@@ -15,7 +15,7 @@ export default function plans() {
     useEffect(() => {
         const fetchPlans = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/plans`);
+                const response = await fetch(`/api/plans`);
                 if (!response.ok) {
                     throw new Error("Error fetching clients");
                 }
