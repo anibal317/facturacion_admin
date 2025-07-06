@@ -68,7 +68,7 @@ export async function PUT(req: Request) {
 
     const updatedPlan = await prisma.plan.update({
       where: { id },
-      data,
+      data:parsed,
     });
 
     return NextResponse.json(updatedPlan, {
