@@ -123,9 +123,9 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
         try {
           let res;
           if (!currentData[i].active) {
-            res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${endpoint}?id=${index}`, { method: "DELETE" });
+            res = await fetch(`/api/${endpoint}?id=${index}`, { method: "DELETE" });
           } else {
-            res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${endpoint}?id=${index}`, { method: "PATCH" });
+            res = await fetch(`/api/${endpoint}?id=${index}`, { method: "PATCH" });
           }
 
           if (!res.ok) {
@@ -189,7 +189,7 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
       };
   
       // Realiza la llamada a la API para agregar el nuevo registro
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${endpoint}`, {
+      const res = await fetch(`/api/${endpoint}`, {
         method: 'POST', // Asegúrate de que este sea el método correcto
         headers: {
           'Content-Type': 'application/json',
@@ -291,7 +291,7 @@ const DataTable: React.FC<DataTableProps> = ({ initialData, sectionTitle, exclud
 
     try {
       // Realiza la llamada a la API para actualizar los datos
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${endpoint}`, {
+      const res = await fetch(`/api/${endpoint}`, {
         method: 'PUT', // Asegúrate de que este sea el método correcto
         headers: {
           'Content-Type': 'application/json',

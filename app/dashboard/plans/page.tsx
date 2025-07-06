@@ -17,7 +17,7 @@ export default function plans() {
             try {
                 const response = await fetch(`/api/plans`);
                 if (!response.ok) {
-                    throw new Error("Error fetching clients");
+                    throw new Error("Error fetching Plans");
                 }
                 const data = await response.json();
                 setPlans(data); // Asumiendo que la respuesta tiene la estructura que proporcionaste
