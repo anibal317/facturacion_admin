@@ -89,7 +89,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, isExpanded, toggle
 
   const handleLogout = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`, { method: 'DELETE', credentials: 'include' });
+      await fetch(`/api/login`, { method: 'DELETE', credentials: 'include' });
       // Limpia cualquier estado de usuario aquí
       localStorage.removeItem('token'); // Si usas token en localStorage
       // Si usas context, llama a tu función de logout del context aquí

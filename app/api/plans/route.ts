@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       status: 201,
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Error creating plan' }, {
+    return NextResponse.json({ error: 'Error creating plan',msg:error }, {
       status: 500,
     });
   }
@@ -75,7 +75,7 @@ export async function PUT(req: Request) {
       status: 200,
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Error updating plan' }, {
+    return NextResponse.json({ error: 'Error updating plan',msg:error }, {
       status: 500,
     });
   }
@@ -102,7 +102,7 @@ export async function DELETE(req: Request) {
       status: 200,
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Error deactivating plan' }, {
+    return NextResponse.json({ error: 'Error deactivating plan',msg:error }, {
       status: 500,
     });
   }
@@ -129,7 +129,7 @@ export async function PATCH(req: Request) {
       status: 200,
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Error activating plan' }, {
+    return NextResponse.json({ error: 'Error activating plan',msg:error }, {
       status: 500,
     });
   }

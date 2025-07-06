@@ -31,6 +31,7 @@ const Login = () => {
 
       if (response.ok) {
         const { token } = await response.json();
+        console.log( 'token',response.json())
         localStorage.setItem('token', token); // Guardar el token en localStorage
         router.push('/dashboard'); // Redirigir al dashboard
       } else {
@@ -54,7 +55,7 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center bg-gray-100 min-h-screen">
       <div className="bg-white shadow-md p-8 rounded-lg w-full max-w-md">
-        <h1 className="mb-4 font-bold text-2xl text-center text-gray-800">Iniciar Sesión</h1>
+        <h1 className="mb-4 font-bold text-gray-800 text-2xl text-center">Iniciar Sesión</h1>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block text-gray-700">Usuario</label>
@@ -62,7 +63,7 @@ const Login = () => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="block border-gray-300 mt-1 p-2 border rounded-md w-full"
+              className="block mt-1 p-2 border border-gray-300 rounded-md w-full"
               required
             />
           </div>
@@ -72,7 +73,7 @@ const Login = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block border-gray-300 mt-1 p-2 border rounded-md w-full"
+              className="block mt-1 p-2 border border-gray-300 rounded-md w-full"
               required
             />
           </div>
